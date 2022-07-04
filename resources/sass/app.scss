@@ -8,10 +8,23 @@
 @import '~bootstrap/scss/bootstrap';
 
 a, a:hover, a:focus, a:active  {
-    text-decoration: none !important;
-    color: inherit;
+    text-decoration: none;
+    color: #FFFFFF;
 }
 
 li {
     list-style: none;
 }
+.nav-link {
+    color: #8fbcbb;
+}
+
+.nav-link:hover, .nav-link:focus {
+    color: #2d3748 ;
+}
+.nav-link.active {
+    color: yellowgreen;
+    background-color: $nav-tabs-link-active-bg;
+    border-color: $nav-tabs-link-active-border-color;
+}
+
