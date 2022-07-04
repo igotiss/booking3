@@ -10252,3 +10252,11 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+a, a:hover, a:focus, a:active {
+  text-decoration: none !important;
+  color: inherit;
+}
+
+li {
+  list-style: none;
+}
