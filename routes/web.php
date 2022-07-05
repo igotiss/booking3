@@ -23,7 +23,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 //User
 
-Route::prefix('profile')
+Route::prefix('profile')->middleware('verified')
     ->group(function () {
         Route::get('/', [\App\Http\Controllers\UserController::class, 'showProfile'])->name('show_profile');
         Route::get('edit', [\App\Http\Controllers\UserController::class, 'editProfile'])->name('edit_profile');
