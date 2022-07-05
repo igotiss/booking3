@@ -20,3 +20,13 @@ Route::get('/', function () {
 Auth::routes(['verify' => true]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('verified');
+
+//User
+
+Route::prefix('profile')
+    ->group(function () {
+        Route::get('/', [\App\Http\Controllers\UserController::class, 'showProfile'])->name('show_profile');
+        Route::get('edit', [\App\Http\Controllers\UserController::class, 'editProfile'])->name('edit_profile');
+        Route::patch('/', [\App\Http\Controllers\UserController::class, 'updateProfile'])->name('update_profile');
+    });
+

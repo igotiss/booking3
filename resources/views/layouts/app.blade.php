@@ -76,9 +76,14 @@
         </nav>-->
         @include('components.header')
 
-        <main class="py-4">
-            @yield('content')
+        <x-errors-success/>
+
+        <main class="py-4 container">
+                @yield('content')
         </main>
+
+        @include('components.footer')
+
     </div>
 </body>
 </html>

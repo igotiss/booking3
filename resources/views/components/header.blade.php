@@ -33,7 +33,7 @@
                             {{ Auth::user()->name }}
                         </a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item " href="#">Керувати аккаунтом</a>
+                            <a class="dropdown-item " href="{{route('show_profile')}}">Керувати аккаунтом</a>
                             <a class="dropdown-item " href="#">Мої оголошення</a>
                             <a class="dropdown-item" href="#">Бронювання</a>
                             <a class="dropdown-item" href="#">Програма лояльності</a>

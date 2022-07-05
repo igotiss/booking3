@@ -10274,3 +10274,11 @@ li {
   background-color: #f8fafc;
   border-color: #dee2e6 #dee2e6 #f8fafc;
 }
+
+.card-img-user-profile {
+  -o-object-fit: cover;
+     object-fit: cover;
+  width: 300px;
+  height: 300px;
+  border-radius: 25px;
+}

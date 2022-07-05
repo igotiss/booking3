@@ -19,6 +19,9 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $fillable = [
         'name',
+        'profile_image',
+        'age',
+        'location',
         'email',
         'password',
     ];
@@ -31,6 +34,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $hidden = [
         'password',
         'remember_token',
+        'is_admin'
     ];
 
     /**

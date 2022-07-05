@@ -28,3 +28,10 @@ li {
     border-color: $nav-tabs-link-active-border-color;
 }
 
+.card-img-user-profile {
+    object-fit: cover;
+    width: 300px;
+    height: 300px;
+    border-radius: 25px;
+}
+
