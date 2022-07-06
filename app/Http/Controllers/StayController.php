@@ -15,6 +15,7 @@ class StayController extends Controller
      */
     public function index()
     {
+
         $stays = Stay::where('user_id', auth()->id())->get()->sortByDesc("created_at");
         return view('pages.stays.index', compact('stays'));
     }
@@ -26,6 +27,7 @@ class StayController extends Controller
      */
     public function create()
     {
+
         return view('pages.stays.create');
     }
 

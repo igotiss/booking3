@@ -14,7 +14,7 @@
 
             <div class="d-flex flex-wrap text-end ">
                 <button type="button" class="btn btn-warning m-2">
-                    <a href="{{route('stays.create')}}">Зареєструвати помешкання</a>
+                    <a href="{{route('create')}}">Зареєструвати помешкання</a>
                 </button>
                 @guest
                     @if (Route::has('login'))

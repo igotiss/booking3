@@ -3,20 +3,18 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-        @include('components.user-nav')
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-                    {{ __('You are logged in!') }}
-                </div>
-            </div>
-        </div>
+
+
+
+        <stays-grid></stays-grid>
+
+
     </div>
 </div>
 @endsection
+<script>
+    import StaysGrid from "../js/components/StaysGrid";
+    export default {
+        components: {StaysGrid}
+    }
+</script>

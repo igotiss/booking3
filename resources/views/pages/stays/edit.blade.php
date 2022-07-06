@@ -5,7 +5,7 @@
         <div class="card">
 
             <div class="card-body">
-                <h4 class="card-title text-center">Створення нового оголошення</h4>
+                <h4 class="card-title text-center">Редагування оголошення ID {{$stay->id}}</h4>
 
                 <form action="{{route('stays.update', $stay->id)}}" method="POST" enctype="multipart/form-data">
                     @method('PATCH')

@@ -41,9 +41,12 @@ Route::prefix('stays')
     ->group(function () {
         Route::get('/', [\App\Http\Controllers\StayController::class, 'index'])->name('own_index');
         Route::get('/{stay}', [\App\Http\Controllers\StayController::class, 'show'])->name('show');
-        Route::get('/create', [\App\Http\Controllers\StayController::class, 'create'])->name('create');
         Route::post('/', [\App\Http\Controllers\StayController::class, 'store'])->name('store');
         Route::get('/edit/{stay}', [\App\Http\Controllers\StayController::class, 'edit'])->name('edit');
         Route::patch('/{stay}', [\App\Http\Controllers\StayController::class, 'update'])->name('update');
         Route::delete('/{stay}', [\App\Http\Controllers\StayController::class, 'destroy'])->name('destroy');
     });
+
+
+Route::get('create', [\App\Http\Controllers\StayController::class, 'create'])->name('create')->middleware('verified');
+
