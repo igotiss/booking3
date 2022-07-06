@@ -14,7 +14,7 @@
 
             <div class="d-flex flex-wrap text-end ">
                 <button type="button" class="btn btn-warning m-2">
-                    <a href="#">Зареєструвати помешкання</a>
+                    <a href="{{route('stays.create')}}">Зареєструвати помешкання</a>
                 </button>
                 @guest
                     @if (Route::has('login'))
@@ -33,8 +33,8 @@
                             {{ Auth::user()->name }}
                         </a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item " href="{{route('show_profile')}}">Керувати аккаунтом</a>
-                            <a class="dropdown-item " href="#">Мої оголошення</a>
+                            <a class="dropdown-item " href="{{route('profile.show')}}">Керувати аккаунтом</a>
+                            <a class="dropdown-item " href="{{route('stays.own_index')}}">Мої оголошення</a>
                             <a class="dropdown-item" href="#">Бронювання</a>
                             <a class="dropdown-item" href="#">Програма лояльності</a>
                             <a class="dropdown-item" href="#">Гаманець</a>

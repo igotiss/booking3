@@ -48,7 +48,7 @@ class UserController extends Controller
         }
 
         $user->update($validated);
-        return redirect(route('show_profile'))->with('success', 'зміни збережено успішно');
+        return redirect(route('profile.show'))->with('success', 'зміни збережено успішно');
     }
 
 }

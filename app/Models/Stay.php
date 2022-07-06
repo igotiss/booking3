@@ -11,6 +11,7 @@ class Stay extends Model
 
     protected $fillable = [
         'title',
+        'image',
         'description',
         'amenities',
         'rooms',

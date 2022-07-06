@@ -27,7 +27,7 @@
 
                     </ul>
 
-                    <a href="{{route('edit_profile')}}" class="btn btn-outline-info ">Редагувати особисті
+                    <a href="{{route('profile.edit')}}" class="btn btn-outline-info ">Редагувати особисті
                         дані</a>
                 </div>
             </div>

@@ -10254,7 +10254,7 @@ textarea.form-control-lg {
 }
 a, a:hover, a:focus, a:active {
   text-decoration: none;
-  color: #FFFFFF;
+  color: inherit;
 }
 
 li {
@@ -10281,4 +10281,15 @@ li {
   width: 300px;
   height: 300px;
   border-radius: 25px;
+}
+
+.card-img-stays {
+  -o-object-fit: cover;
+     object-fit: cover;
+  width: 300px;
+  height: 300px;
+}
+
+.link-inline {
+  display: inline-block;
 }

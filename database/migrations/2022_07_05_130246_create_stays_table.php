@@ -15,8 +15,9 @@ class CreateStaysTable extends Migration
     {
         Schema::create('stays', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->after('id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('title');
+            $table->string('image')->nullable();
             $table->text('description');
             $table->text('amenities')->nullable();
             $table->integer('rooms')->default(1);

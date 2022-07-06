@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,10 +24,26 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 //User
 
-Route::prefix('profile')->middleware('verified')
+Route::prefix('profile')
+    ->name('profile.')
+    ->middleware('verified')
     ->group(function () {
-        Route::get('/', [\App\Http\Controllers\UserController::class, 'showProfile'])->name('show_profile');
-        Route::get('edit', [\App\Http\Controllers\UserController::class, 'editProfile'])->name('edit_profile');
-        Route::patch('/', [\App\Http\Controllers\UserController::class, 'updateProfile'])->name('update_profile');
+        Route::get('/', [\App\Http\Controllers\UserController::class, 'showProfile'])->name('show');
+        Route::get('edit', [\App\Http\Controllers\UserController::class, 'editProfile'])->name('edit');
+        Route::patch('/', [\App\Http\Controllers\UserController::class, 'updateProfile'])->name('update');
     });
 
+
+//Stays
+Route::prefix('stays')
+    ->name('stays.')
+    ->middleware('verified')
+    ->group(function () {
+        Route::get('/', [\App\Http\Controllers\StayController::class, 'index'])->name('own_index');
+        Route::get('/{stay}', [\App\Http\Controllers\StayController::class, 'show'])->name('show');
+        Route::get('/create', [\App\Http\Controllers\StayController::class, 'create'])->name('create');
+        Route::post('/', [\App\Http\Controllers\StayController::class, 'store'])->name('store');
+        Route::get('/edit/{stay}', [\App\Http\Controllers\StayController::class, 'edit'])->name('edit');
+        Route::patch('/{stay}', [\App\Http\Controllers\StayController::class, 'update'])->name('update');
+        Route::delete('/{stay}', [\App\Http\Controllers\StayController::class, 'destroy'])->name('destroy');
+    });

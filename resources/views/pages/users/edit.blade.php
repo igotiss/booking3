@@ -3,7 +3,7 @@
 @section('content')
     <div class="container d-flex justify-content-center">
         <div class="col-md-6 mt-3">
-            <form class="form" action="{{ route('update_profile') }}" method="POST" enctype="multipart/form-data">
+            <form class="form" action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
                 @method('PATCH')
                 @csrf
 

@@ -16,6 +16,7 @@ class StayFactory extends Factory
         return [
             'user_id' => $this->faker->numberBetween(1, 10),
             'title' => $this->faker->word,
+            'image' => null,
             'description' => $this->faker->sentence(15),
             'amenities' => $this->faker->sentence(4),
             'rooms' => $this->faker->numberBetween(1, 5),
