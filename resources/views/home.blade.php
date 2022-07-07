@@ -12,9 +12,4 @@
     </div>
 </div>
 @endsection
-<script>
-    import StaysGrid from "../js/components/StaysGrid";
-    export default {
-        components: {StaysGrid}
-    }
-</script>
+

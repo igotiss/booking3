@@ -22,58 +22,17 @@ class StayApiController extends Controller
      */
     public function index()
     {
-
         return StayResource::collection(Stay::orderBy('created_at', 'desc')->paginate(10));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StayRequest $request)
-    {
-        $stay = Stay::create($request->validated());
-
-        return new StayResource($stay);
+    public function getTypes() {
+        $types['hotels'] = Stay::where('type', 'hotel')->count();
+        $types['apartments'] = Stay::where('type', 'apartment')->count();
+        $types['resorts'] = Stay::where('type', 'resort')->count();
+        $types['villas'] = Stay::where('type', 'villa')->count();
+        $types['cottages'] = Stay::where('type', 'cottage')->count();
+        return $types;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Stay  $stay
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Stay $stay)
-    {
-        return new StayResource($stay);
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Stay  $stay
-     * @return \Illuminate\Http\Response
-     */
-    public function update(StayRequest $request, Stay $stay)
-    {
-        $stay->update($request->validated());
-
-        return new StayResource($stay);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Stay  $stay
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Stay $stay)
-    {
-        $stay->delete();
-
-        return response()->noContent();
-    }
 }
