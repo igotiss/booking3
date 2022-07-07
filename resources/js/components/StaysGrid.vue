@@ -2,6 +2,7 @@
     <div class="search-wrapper">
         <input type="text" v-model="search" placeholder="Search title.."/>
         <button class="btn btn-outline-success" @click="filteredStays">search</button>
+        <button class="btn btn-outline-success" @click="countStayType">count</button>
 
     </div>
 <div class="d-flex">
@@ -46,7 +47,7 @@
     </div>
 
     <div class="content">
-        <h5 class="mt-3 p-3" v-if="total">Знайдено помешкань: {{total}} </h5>
+        <h5 class="mt-3 p-3" v-if="stays.length">Знайдено помешкань: {{stays.length}} </h5>
         <h5 class="mt-3 p-3" v-else="total">Пoмешкань не знайдено </h5>
 
         <div class="card mb-3" v-for="stay in stays" :key="stay.id">
@@ -88,44 +89,58 @@
 
 <script>
 
-import { ref } from "vue";
+
+import {forEach} from "lodash";
+
 export default {
     name: "StaysGrid",
     data() {
         return {
             search: "",
             stays: {},
-            total: 0,
             types: {},
         }
     },
     methods: {
         async getStays(page = 1) {
-            await axios.get('api/stays?page=' + page)
+            await axios.get('api/stays')
                 .then(response => {
                     this.stays = response.data.data;
-                    this.total = response.data.meta.total;
                 });
         },
         async getTypes() {
             await axios.get('api/types')
                 .then(response =>{
                     this.types = response.data;
-                    console.log(this.types)
                 })
         },
         filteredStays() {
-            const searchRes =  this.stays.filter(stay =>
-                stay.title.toLowerCase().includes(this.search.toLowerCase())
-            );
-            console.log(this.search.toLowerCase());
+            if(this.search.length) {
+                this.stays =  this.stays.filter(stay =>
+                    stay.title.toLowerCase().includes(this.search.toLowerCase())
 
-    },
+                );
+                // Types
+                this.types.hotels = this.stays.filter(obj=>obj.type === 'hotel').length;
+                this.types.apartments = this.stays.filter(obj=>obj.type === 'apartment').length;
+                this.types.resorts = this.stays.filter(obj=>obj.type === 'resort').length;
+                this.types.villas = this.stays.filter(obj=>obj.type === 'villa').length;
+                this.types.cottages = this.stays.filter(obj=>obj.type === 'cottage').length;
+
+            } else {
+                this.stays = this.getStays();
+                this.types = this.getTypes();
+            }
+
+        },
+
     },
     mounted() {
         this.getStays();
         this.getTypes();
     },
+
+
 }
 </script>
 

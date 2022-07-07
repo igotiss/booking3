@@ -22,7 +22,7 @@ class StayApiController extends Controller
      */
     public function index()
     {
-        return StayResource::collection(Stay::orderBy('created_at', 'desc')->paginate(10));
+        return StayResource::collection(Stay::orderBy('created_at', 'desc')->get());
     }
 
     public function getTypes() {
