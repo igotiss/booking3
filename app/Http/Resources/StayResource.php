@@ -17,7 +17,11 @@ class StayResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => ucfirst($this->title),
+            'image' => $this->image,
             'description' => $this->description,
+            'amenities' => $this->amenities,
+            'rooms' => $this->rooms,
+            'beds' => $this->beds,
             'type' =>  $this->type,
             'location' => ucfirst($this->location),
             'price' => $this->price

@@ -8,13 +8,12 @@
 
         @foreach($stays as $stay)
             <div class="card mb-3">
-                <div class="row g-0">
-                        @if ($stay->image)
-
-                            <img src="../uploads/stays/{{$stay->image}}" class="card-img-stays p-2" alt="{{$stay->title}}">
-
-                        @else
-                        <div class="col-md-4 stay-image card-img-stays p-2">
+                <div class="row ">
+                    <a href="{{route('stays.show', $stay->id)}}" class="col-md-3" >
+                    @if ($stay->image)
+                        <img src="../uploads/stays/{{$stay->image}}" class="card-img-stays " alt="{{$stay->title}}">
+                    @else
+                        <div class="stay-image card-img-stays p-2">
                             <svg class="bd-placeholder-img img-fluid rounded-start" width="100%" height="250"
                                  xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image"
                                  preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
@@ -23,6 +22,7 @@
                             </svg>
                         </div>
                         @endif
+                    </a>
 
                     <div class="col-md-8">
                         <div class="card-body pb-2">
@@ -68,7 +68,7 @@
                                     <i>відсутні</i>
                                 @endif
 
-                            </span>
+
                             </p>
                             <p class="card-text ">
                                 Кімнат:
