@@ -22714,9 +22714,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       searchLocation: "",
       searchRooms: 0,
       stays: {},
-      types: {},
-      checkedFilters: [],
-      numbers: [1, 2, 3, 4, 5]
+      filteredStays: [],
+      checkedFiltersTypes: [],
+      checkedFiltersAmenities: [],
+      checkedFiltersPrices: [],
+      filtersOn: false
     };
   },
   methods: {
@@ -22744,84 +22746,227 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee);
       }))();
     },
-    getTypes: function getTypes() {
+    filterTypes: function filterTypes() {
       var _this2 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                _context2.next = 2;
-                return axios.get('api/types').then(function (response) {
-                  _this2.types = response.data;
-                });
+      var filtersArr = {
+        'typesON': this.checkedFiltersTypes.length,
+        'amenitiesON': this.checkedFiltersAmenities.length,
+        'pricesON': this.checkedFiltersPrices.length
+      };
+      this.filtersOn = !!(filtersArr.typesON || filtersArr.amenitiesON || filtersArr.pricesON);
+      this.filteredStays = []; // Filtering by Types
 
-              case 2:
-              case "end":
-                return _context2.stop();
-            }
+      var resourceType = this.stays;
+
+      if (filtersArr.typesON) {
+        var tempArr = [];
+
+        var _loop = function _loop(i) {
+          tempArr.push(resourceType.filter(function (stay) {
+            return stay.type === _this2.checkedFiltersTypes[i];
+          }));
+        };
+
+        for (var i = 0; i < this.checkedFiltersTypes.length; i++) {
+          _loop(i);
+        }
+
+        for (var _i = 0; _i < tempArr.length; _i++) {
+          this.filteredStays = this.filteredStays.concat(tempArr[_i]);
+        }
+
+        this.filteredStays = this.filteredStays.filter(function (item, index) {
+          return _this2.filteredStays.indexOf(item) == index;
+        });
+      } //Filtering by Amenities
+
+
+      if (filtersArr.amenitiesON) {
+        if (filtersArr.typesON) {
+          resourceType = this.filteredStays;
+        }
+
+        var _tempArr = [];
+        var tempArr2 = [];
+
+        var _loop2 = function _loop2(_i2) {
+          _tempArr.push(resourceType.filter(function (stay) {
+            return stay.amenities === _this2.checkedFiltersAmenities[_i2];
+          }));
+        };
+
+        for (var _i2 = 0; _i2 < this.checkedFiltersAmenities.length; _i2++) {
+          _loop2(_i2);
+        }
+
+        for (var _i3 = 0; _i3 < _tempArr.length; _i3++) {
+          tempArr2 = tempArr2.concat(_tempArr[_i3]);
+        }
+
+        this.filteredStays = tempArr2.filter(function (item, index) {
+          return tempArr2.indexOf(item) == index;
+        });
+      } //Filtering by Prices
+
+
+      if (filtersArr.pricesON) {
+        if (filtersArr.amenitiesON || filtersArr.typesON) {
+          resourceType = this.filteredStays;
+        }
+
+        var _tempArr2 = [];
+        var _tempArr3 = [];
+
+        for (var _i4 = 0; _i4 < this.checkedFiltersPrices.length; _i4++) {
+          switch (this.checkedFiltersPrices[_i4]) {
+            case "low99":
+              _tempArr2.push(resourceType.filter(function (stay) {
+                return stay.price < 99;
+              }));
+
+              break;
+
+            case "100-500":
+              _tempArr2.push(resourceType.filter(function (stay) {
+                return stay.price >= 100 && stay.price < 500;
+              }));
+
+              break;
+
+            case "500-1000":
+              _tempArr2.push(resourceType.filter(function (stay) {
+                return stay.price >= 500 && stay.price < 1000;
+              }));
+
+              break;
+
+            case "hi1000":
+              _tempArr2.push(resourceType.filter(function (stay) {
+                return stay.price >= 1000;
+              }));
+
+              break;
           }
-        }, _callee2);
-      }))();
-    },
-    check: function check(e) {
-      console.log(this.checkedFilters);
+        }
+
+        for (var _i5 = 0; _i5 < _tempArr2.length; _i5++) {
+          _tempArr3 = _tempArr3.concat(_tempArr2[_i5]);
+        }
+
+        this.filteredStays = _tempArr3.filter(function (item, index) {
+          return _tempArr3.indexOf(item) == index;
+        });
+      }
     },
     searchedStays: function searchedStays() {
       var _this3 = this;
 
-      if (this.searchLocation.length || this.searchRooms > 0) {
-        this.stays = this.stays.filter(function (stay) {
-          return stay.location.toLowerCase().includes(_this3.searchLocation.toLowerCase());
-        });
+      this.getStays().then(function (response) {
+        if (_this3.searchLocation.length) {
+          _this3.stays = _this3.stays.filter(function (stay) {
+            return stay.location.toLowerCase().includes(_this3.searchLocation.toLowerCase());
+          });
+        }
 
-        if (this.searchRooms > 0) {
-          this.stays = this.stays.filter(function (stay) {
+        if (_this3.searchRooms > 0) {
+          _this3.stays = _this3.stays.filter(function (stay) {
             return stay.rooms === _this3.searchRooms;
           });
-        } // Types && stay.rooms ===(this.searchRooms)
-
-
-        this.types.hotels = this.stays.filter(function (obj) {
-          return obj.type === 'hotel';
-        }).length;
-        this.types.apartments = this.stays.filter(function (obj) {
-          return obj.type === 'apartment';
-        }).length;
-        this.types.resorts = this.stays.filter(function (obj) {
-          return obj.type === 'resort';
-        }).length;
-        this.types.villas = this.stays.filter(function (obj) {
-          return obj.type === 'villa';
-        }).length;
-        this.types.cottages = this.stays.filter(function (obj) {
-          return obj.type === 'cottage';
-        }).length;
-      } else {
-        this.stays = this.getStays();
-        this.types = this.getTypes();
-      }
+        }
+      });
     }
   },
   mounted: function mounted() {
     this.getStays();
-    this.getTypes();
   },
   computed: {
-    hotels: function hotels() {
-      if (this.stays.length) {
-        return this.stays.filter(function (obj) {
-          return obj.type === 'hotel';
-        }).length;
+    typesReactive: function typesReactive() {
+      if (this.stays.length && !this.filtersOn) {
+        return {
+          'hotels': this.stays.filter(function (obj) {
+            return obj.type === 'hotel';
+          }).length,
+          'apartments': this.stays.filter(function (obj) {
+            return obj.type === 'apartment';
+          }).length,
+          'resorts': this.stays.filter(function (obj) {
+            return obj.type === 'resort';
+          }).length,
+          'villas': this.stays.filter(function (obj) {
+            return obj.type === 'villa';
+          }).length,
+          'cottages': this.stays.filter(function (obj) {
+            return obj.type === 'cottage';
+          }).length,
+          'wiFi': this.stays.filter(function (obj) {
+            return obj.amenities === 'WiFi';
+          }).length,
+          'tv': this.stays.filter(function (obj) {
+            return obj.amenities === 'кабельне TV';
+          }).length,
+          'jacuzzi': this.stays.filter(function (obj) {
+            return obj.amenities === 'джакузі';
+          }).length,
+          'pool': this.stays.filter(function (obj) {
+            return obj.amenities === 'басейн';
+          }).length,
+          'lowerHundred': this.stays.filter(function (obj) {
+            return obj.price < 100;
+          }).length,
+          'oneFiveHundred': this.stays.filter(function (obj) {
+            return obj.price >= 100 && obj.price < 500;
+          }).length,
+          'fiveHundredThousand': this.stays.filter(function (obj) {
+            return obj.price >= 500 && obj.price < 1000;
+          }).length,
+          'upperThousand': this.stays.filter(function (obj) {
+            return obj.price >= 1000;
+          }).length
+        };
       } else {
-        return 0;
+        return {
+          'hotels': this.filteredStays.filter(function (obj) {
+            return obj.type === 'hotel';
+          }).length,
+          'apartments': this.filteredStays.filter(function (obj) {
+            return obj.type === 'apartment';
+          }).length,
+          'resorts': this.filteredStays.filter(function (obj) {
+            return obj.type === 'resort';
+          }).length,
+          'villas': this.filteredStays.filter(function (obj) {
+            return obj.type === 'villa';
+          }).length,
+          'cottages': this.filteredStays.filter(function (obj) {
+            return obj.type === 'cottage';
+          }).length,
+          'wiFi': this.filteredStays.filter(function (obj) {
+            return obj.amenities === 'WiFi';
+          }).length,
+          'tv': this.filteredStays.filter(function (obj) {
+            return obj.amenities === 'кабельне TV';
+          }).length,
+          'jacuzzi': this.filteredStays.filter(function (obj) {
+            return obj.amenities === 'джакузі';
+          }).length,
+          'pool': this.filteredStays.filter(function (obj) {
+            return obj.amenities === 'басейн';
+          }).length,
+          'lowerHundred': this.filteredStays.filter(function (obj) {
+            return obj.price < 100;
+          }).length,
+          'oneFiveHundred': this.filteredStays.filter(function (obj) {
+            return obj.price >= 100 && obj.price < 500;
+          }).length,
+          'fiveHundredThousand': this.filteredStays.filter(function (obj) {
+            return obj.price >= 500 && obj.price < 1000;
+          }).length,
+          'upperThousand': this.filteredStays.filter(function (obj) {
+            return obj.price >= 1000;
+          }).length
+        };
       }
-    },
-    evenNumbers: function evenNumbers() {
-      return this.numbers.filter(function (number) {
-        return number % 2 === 0;
-      });
     }
   }
 });
@@ -22991,7 +23136,9 @@ var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
   "data-bs-toggle": "collapse",
   "data-bs-target": "#home-collapse",
   "aria-expanded": "true"
-}, " Тип помешкання ", -1
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
+  "class": "text-decoration-underline"
+}, " Тип помешкання")], -1
 /* HOISTED */
 );
 
@@ -23002,47 +23149,73 @@ var _hoisted_16 = {
 var _hoisted_17 = {
   "class": "btn-toggle-nav list-unstyled fw-normal pb-1 small"
 };
-
-var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-  type: "checkbox"
-}, null, -1
-/* HOISTED */
-);
-
-var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-  type: "checkbox"
-}, null, -1
-/* HOISTED */
-);
-
-var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-  type: "checkbox"
-}, null, -1
-/* HOISTED */
-);
-
-var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<li class=\"border-top my-3\"></li><li class=\"mb-1\"><button class=\"btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed\" data-bs-toggle=\"collapse\" data-bs-target=\"#account-collapse\" aria-expanded=\"false\"> Account </button><div class=\"collapse\" id=\"account-collapse\"><ul class=\"btn-toggle-nav list-unstyled fw-normal pb-1 small\"><li><a href=\"#\" class=\"link-dark d-inline-flex text-decoration-none rounded\">New...</a></li><li><a href=\"#\" class=\"link-dark d-inline-flex text-decoration-none rounded\">Profile</a></li><li><a href=\"#\" class=\"link-dark d-inline-flex text-decoration-none rounded\">Settings</a></li><li><a href=\"#\" class=\"link-dark d-inline-flex text-decoration-none rounded\">Sign out</a></li></ul></div></li>", 2);
-
-var _hoisted_23 = {
-  "class": "content p-3"
+var _hoisted_18 = {
+  "class": "mb-1"
 };
+
+var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  "class": "btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed",
+  "data-bs-toggle": "collapse",
+  "data-bs-target": "#home-collapse",
+  "aria-expanded": "true"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
+  "class": "text-decoration-underline"
+}, " Зручності")], -1
+/* HOISTED */
+);
+
+var _hoisted_20 = {
+  "class": "collapse show",
+  id: "home-collapse"
+};
+var _hoisted_21 = {
+  "class": "btn-toggle-nav list-unstyled fw-normal pb-1 small"
+};
+var _hoisted_22 = {
+  "class": "mb-1"
+};
+
+var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  "class": "btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed",
+  "data-bs-toggle": "collapse",
+  "data-bs-target": "#home-collapse",
+  "aria-expanded": "true"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
+  "class": "text-decoration-underline"
+}, " Бюджет за ніч")], -1
+/* HOISTED */
+);
+
 var _hoisted_24 = {
-  key: 0,
-  "class": "mt-3 p-3"
+  "class": "collapse show",
+  id: "home-collapse"
 };
 var _hoisted_25 = {
-  key: 1,
+  "class": "btn-toggle-nav list-unstyled fw-normal pb-1 small"
+};
+
+var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", {
+  "class": "border-top my-3"
+}, null, -1
+/* HOISTED */
+);
+
+var _hoisted_27 = {
+  key: 0,
+  "class": "content p-3"
+};
+var _hoisted_28 = {
   "class": "mt-3 p-3"
 };
-var _hoisted_26 = {
+var _hoisted_29 = {
   "class": "row g-0"
 };
-var _hoisted_27 = {
+var _hoisted_30 = {
   "class": "col-md-4 stay-image p-2"
 };
-var _hoisted_28 = ["href"];
-var _hoisted_29 = ["src"];
-var _hoisted_30 = {
+var _hoisted_31 = ["href"];
+var _hoisted_32 = ["src"];
+var _hoisted_33 = {
   key: 1,
   "class": "bd-placeholder-img img-fluid rounded-start",
   width: "100%",
@@ -23054,11 +23227,11 @@ var _hoisted_30 = {
   focusable: "false"
 };
 
-var _hoisted_31 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("title", null, "Placeholder", -1
+var _hoisted_34 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("title", null, "Placeholder", -1
 /* HOISTED */
 );
 
-var _hoisted_32 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("rect", {
+var _hoisted_35 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("rect", {
   width: "100%",
   height: "100%",
   fill: "#868e96"
@@ -23066,7 +23239,7 @@ var _hoisted_32 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_33 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("text", {
+var _hoisted_36 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("text", {
   x: "50%",
   y: "50%",
   fill: "#dee2e6",
@@ -23075,94 +23248,240 @@ var _hoisted_33 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_34 = [_hoisted_31, _hoisted_32, _hoisted_33];
-var _hoisted_35 = {
+var _hoisted_37 = [_hoisted_34, _hoisted_35, _hoisted_36];
+var _hoisted_38 = {
   "class": "col-md-8"
 };
-var _hoisted_36 = {
+var _hoisted_39 = {
   "class": "card-body pb-2"
 };
-var _hoisted_37 = {
+var _hoisted_40 = {
   "class": "d-flex flex-row justify-content-between align-items-baseline"
 };
-var _hoisted_38 = ["href"];
-var _hoisted_39 = {
+var _hoisted_41 = ["href"];
+var _hoisted_42 = {
   "class": "card-title"
 };
-var _hoisted_40 = {
+var _hoisted_43 = {
   "class": "card-text"
 };
-var _hoisted_41 = {
+var _hoisted_44 = {
   "class": "text-muted"
 };
 
-var _hoisted_42 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Тип помешкання: ");
+var _hoisted_45 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Тип помешкання: ");
 
-var _hoisted_43 = {
+var _hoisted_46 = {
   key: 0
 };
-var _hoisted_44 = {
+var _hoisted_47 = {
   key: 1
 };
-var _hoisted_45 = {
+var _hoisted_48 = {
   key: 2
 };
-var _hoisted_46 = {
+var _hoisted_49 = {
   key: 3
 };
-var _hoisted_47 = {
+var _hoisted_50 = {
   key: 4
 };
 
-var _hoisted_48 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+var _hoisted_51 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
   href: "#"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", null, "Рейтинг 9.8"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" 4 відгуки ")], -1
 /* HOISTED */
 );
 
-var _hoisted_49 = {
+var _hoisted_52 = {
   "class": "card-text me-2"
 };
-var _hoisted_50 = {
+var _hoisted_53 = {
   "class": "text-muted"
 };
 
-var _hoisted_51 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Локація: ");
-
-var _hoisted_52 = {
-  "class": "stay-location"
-};
-var _hoisted_53 = {
-  "class": "card-text"
-};
-
-var _hoisted_54 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Опис: ");
+var _hoisted_54 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Локація: ");
 
 var _hoisted_55 = {
+  "class": "stay-location"
+};
+var _hoisted_56 = {
   "class": "card-text"
 };
 
-var _hoisted_56 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Зручності: ");
+var _hoisted_57 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Опис: ");
 
-var _hoisted_57 = {
+var _hoisted_58 = {
   "class": "card-text"
 };
 
-var _hoisted_58 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Кімнат: ");
+var _hoisted_59 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Зручності: ");
 
-var _hoisted_59 = {
+var _hoisted_60 = {
+  "class": "card-text"
+};
+
+var _hoisted_61 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Кімнат: ");
+
+var _hoisted_62 = {
   "class": "card-text p-2"
 };
 
-var _hoisted_60 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Ліжок: ");
+var _hoisted_63 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Ліжок: ");
 
-var _hoisted_61 = {
+var _hoisted_64 = {
   "class": "card-text stay-price"
 };
 
-var _hoisted_62 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Ціна: ");
+var _hoisted_65 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Ціна: ");
 
-var _hoisted_63 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+var _hoisted_66 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  "class": "btn btn-primary mt-3"
+}, "Забронювати", -1
+/* HOISTED */
+);
+
+var _hoisted_67 = {
+  key: 1,
+  "class": "content p-3"
+};
+var _hoisted_68 = {
+  key: 0,
+  "class": "mt-3 p-3"
+};
+var _hoisted_69 = {
+  key: 1,
+  "class": "mt-3 p-3"
+};
+var _hoisted_70 = {
+  "class": "row g-0"
+};
+var _hoisted_71 = {
+  "class": "col-md-4 stay-image p-2"
+};
+var _hoisted_72 = ["href"];
+var _hoisted_73 = ["src"];
+var _hoisted_74 = {
+  key: 1,
+  "class": "bd-placeholder-img img-fluid rounded-start",
+  width: "100%",
+  height: "250",
+  xmlns: "http://www.w3.org/2000/svg",
+  role: "img",
+  "aria-label": "Placeholder: Image",
+  preserveAspectRatio: "xMidYMid slice",
+  focusable: "false"
+};
+
+var _hoisted_75 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("title", null, "Placeholder", -1
+/* HOISTED */
+);
+
+var _hoisted_76 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("rect", {
+  width: "100%",
+  height: "100%",
+  fill: "#868e96"
+}, null, -1
+/* HOISTED */
+);
+
+var _hoisted_77 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("text", {
+  x: "50%",
+  y: "50%",
+  fill: "#dee2e6",
+  dy: ".3em"
+}, "Image", -1
+/* HOISTED */
+);
+
+var _hoisted_78 = [_hoisted_75, _hoisted_76, _hoisted_77];
+var _hoisted_79 = {
+  "class": "col-md-8"
+};
+var _hoisted_80 = {
+  "class": "card-body pb-2"
+};
+var _hoisted_81 = {
+  "class": "d-flex flex-row justify-content-between align-items-baseline"
+};
+var _hoisted_82 = ["href"];
+var _hoisted_83 = {
+  "class": "card-title"
+};
+var _hoisted_84 = {
+  "class": "card-text"
+};
+var _hoisted_85 = {
+  "class": "text-muted"
+};
+
+var _hoisted_86 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Тип помешкання: ");
+
+var _hoisted_87 = {
+  key: 0
+};
+var _hoisted_88 = {
+  key: 1
+};
+var _hoisted_89 = {
+  key: 2
+};
+var _hoisted_90 = {
+  key: 3
+};
+var _hoisted_91 = {
+  key: 4
+};
+
+var _hoisted_92 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+  href: "#"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", null, "Рейтинг 9.8"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" 4 відгуки ")], -1
+/* HOISTED */
+);
+
+var _hoisted_93 = {
+  "class": "card-text me-2"
+};
+var _hoisted_94 = {
+  "class": "text-muted"
+};
+
+var _hoisted_95 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Локація: ");
+
+var _hoisted_96 = {
+  "class": "stay-location"
+};
+var _hoisted_97 = {
+  "class": "card-text"
+};
+
+var _hoisted_98 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Опис: ");
+
+var _hoisted_99 = {
+  "class": "card-text"
+};
+
+var _hoisted_100 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Зручності: ");
+
+var _hoisted_101 = {
+  "class": "card-text"
+};
+
+var _hoisted_102 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Кімнат: ");
+
+var _hoisted_103 = {
+  "class": "card-text p-2"
+};
+
+var _hoisted_104 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Ліжок: ");
+
+var _hoisted_105 = {
+  "class": "card-text stay-price"
+};
+
+var _hoisted_106 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Ціна: ");
+
+var _hoisted_107 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
   "class": "btn btn-primary mt-3"
 }, "Забронювати", -1
 /* HOISTED */
@@ -23197,42 +23516,179 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, "Шукати")])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_14, [_hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "checkbox",
     "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
-      return $data.checkedFilters = $event;
+      return $data.checkedFiltersTypes = $event;
     }),
-    onChange: _cache[4] || (_cache[4] = function ($event) {
-      return $options.check($event);
+    onChange: _cache[4] || (_cache[4] = function () {
+      return $options.filterTypes && $options.filterTypes.apply($options, arguments);
     }),
     value: "hotel"
   }, null, 544
   /* HYDRATE_EVENTS, NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.checkedFilters]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Готелі (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.hotels) + ")", 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.checkedFiltersTypes]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Готелі (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.typesReactive.hotels ? $options.typesReactive.hotels : 0) + ")", 1
   /* TEXT */
   )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "checkbox",
     "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
-      return $data.checkedFilters = $event;
+      return $data.checkedFiltersTypes = $event;
     }),
-    onChange: _cache[6] || (_cache[6] = function ($event) {
-      return $options.check($event);
+    onChange: _cache[6] || (_cache[6] = function () {
+      return $options.filterTypes && $options.filterTypes.apply($options, arguments);
     }),
     value: "apartment"
   }, null, 544
   /* HYDRATE_EVENTS, NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.checkedFilters]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Квартири (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.types.apartments) + ")", 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.checkedFiltersTypes]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Квартири (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.typesReactive.apartments ? $options.typesReactive.apartments : 0) + ")", 1
   /* TEXT */
-  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [_hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Курорти (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.types.resorts) + ")", 1
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "checkbox",
+    "onUpdate:modelValue": _cache[7] || (_cache[7] = function ($event) {
+      return $data.checkedFiltersTypes = $event;
+    }),
+    onChange: _cache[8] || (_cache[8] = function () {
+      return $options.filterTypes && $options.filterTypes.apply($options, arguments);
+    }),
+    value: "resort"
+  }, null, 544
+  /* HYDRATE_EVENTS, NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.checkedFiltersTypes]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Курорти (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.typesReactive.resorts ? $options.typesReactive.resorts : 0) + ")", 1
   /* TEXT */
-  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [_hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Вілли (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.types.villas) + ")", 1
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "checkbox",
+    "onUpdate:modelValue": _cache[9] || (_cache[9] = function ($event) {
+      return $data.checkedFiltersTypes = $event;
+    }),
+    onChange: _cache[10] || (_cache[10] = function () {
+      return $options.filterTypes && $options.filterTypes.apply($options, arguments);
+    }),
+    value: "villa"
+  }, null, 544
+  /* HYDRATE_EVENTS, NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.checkedFiltersTypes]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Вілли (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.typesReactive.villas ? $options.typesReactive.villas : 0) + ")", 1
   /* TEXT */
-  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [_hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Котеджі (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.types.cottages) + ")", 1
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "checkbox",
+    "onUpdate:modelValue": _cache[11] || (_cache[11] = function ($event) {
+      return $data.checkedFiltersTypes = $event;
+    }),
+    onChange: _cache[12] || (_cache[12] = function () {
+      return $options.filterTypes && $options.filterTypes.apply($options, arguments);
+    }),
+    value: "cottage"
+  }, null, 544
+  /* HYDRATE_EVENTS, NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.checkedFiltersTypes]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Котеджі (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.typesReactive.cottages ? $options.typesReactive.cottages : 0) + ")", 1
   /* TEXT */
-  )])])])]), _hoisted_21])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [$data.stays.length ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h5", _hoisted_24, "Знайдено помешкань: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.stays.length), 1
+  )])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_18, [_hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "checkbox",
+    "onUpdate:modelValue": _cache[13] || (_cache[13] = function ($event) {
+      return $data.checkedFiltersAmenities = $event;
+    }),
+    onChange: _cache[14] || (_cache[14] = function () {
+      return $options.filterTypes && $options.filterTypes.apply($options, arguments);
+    }),
+    value: "WiFi"
+  }, null, 544
+  /* HYDRATE_EVENTS, NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.checkedFiltersAmenities]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" WiFi (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.typesReactive.wiFi ? $options.typesReactive.wiFi : 0) + ")", 1
   /* TEXT */
-  )) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h5", _hoisted_25, "Пoмешкань не знайдено ")), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.stays, function (stay) {
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "checkbox",
+    "onUpdate:modelValue": _cache[15] || (_cache[15] = function ($event) {
+      return $data.checkedFiltersAmenities = $event;
+    }),
+    onChange: _cache[16] || (_cache[16] = function () {
+      return $options.filterTypes && $options.filterTypes.apply($options, arguments);
+    }),
+    value: "кабельне TV"
+  }, null, 544
+  /* HYDRATE_EVENTS, NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.checkedFiltersAmenities]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" кабельне TV (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.typesReactive.tv ? $options.typesReactive.tv : 0) + ")", 1
+  /* TEXT */
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "checkbox",
+    "onUpdate:modelValue": _cache[17] || (_cache[17] = function ($event) {
+      return $data.checkedFiltersAmenities = $event;
+    }),
+    onChange: _cache[18] || (_cache[18] = function () {
+      return $options.filterTypes && $options.filterTypes.apply($options, arguments);
+    }),
+    value: "джакузі"
+  }, null, 544
+  /* HYDRATE_EVENTS, NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.checkedFiltersAmenities]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" джакузі (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.typesReactive.jacuzzi ? $options.typesReactive.jacuzzi : 0) + ")", 1
+  /* TEXT */
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "checkbox",
+    "onUpdate:modelValue": _cache[19] || (_cache[19] = function ($event) {
+      return $data.checkedFiltersAmenities = $event;
+    }),
+    onChange: _cache[20] || (_cache[20] = function () {
+      return $options.filterTypes && $options.filterTypes.apply($options, arguments);
+    }),
+    value: "басейн"
+  }, null, 544
+  /* HYDRATE_EVENTS, NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.checkedFiltersAmenities]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" басейн (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.typesReactive.pool ? $options.typesReactive.pool : 0) + ")", 1
+  /* TEXT */
+  )])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_22, [_hoisted_23, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_25, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "checkbox",
+    "onUpdate:modelValue": _cache[21] || (_cache[21] = function ($event) {
+      return $data.checkedFiltersPrices = $event;
+    }),
+    onChange: _cache[22] || (_cache[22] = function () {
+      return $options.filterTypes && $options.filterTypes.apply($options, arguments);
+    }),
+    value: "low99"
+  }, null, 544
+  /* HYDRATE_EVENTS, NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.checkedFiltersPrices]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" до 100 грн за добу (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.typesReactive.lowerHundred ? $options.typesReactive.lowerHundred : 0) + ")", 1
+  /* TEXT */
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "checkbox",
+    "onUpdate:modelValue": _cache[23] || (_cache[23] = function ($event) {
+      return $data.checkedFiltersPrices = $event;
+    }),
+    onChange: _cache[24] || (_cache[24] = function () {
+      return $options.filterTypes && $options.filterTypes.apply($options, arguments);
+    }),
+    value: "100-500"
+  }, null, 544
+  /* HYDRATE_EVENTS, NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.checkedFiltersPrices]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" 100 - 499 грн за добу (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.typesReactive.oneFiveHundred ? $options.typesReactive.oneFiveHundred : 0) + ")", 1
+  /* TEXT */
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "checkbox",
+    "onUpdate:modelValue": _cache[25] || (_cache[25] = function ($event) {
+      return $data.checkedFiltersPrices = $event;
+    }),
+    onChange: _cache[26] || (_cache[26] = function () {
+      return $options.filterTypes && $options.filterTypes.apply($options, arguments);
+    }),
+    value: "500-1000"
+  }, null, 544
+  /* HYDRATE_EVENTS, NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.checkedFiltersPrices]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" 500 - 999 грн за добу (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.typesReactive.fiveHundredThousand ? $options.typesReactive.fiveHundredThousand : 0) + ")", 1
+  /* TEXT */
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "checkbox",
+    "onUpdate:modelValue": _cache[27] || (_cache[27] = function ($event) {
+      return $data.checkedFiltersPrices = $event;
+    }),
+    onChange: _cache[28] || (_cache[28] = function () {
+      return $options.filterTypes && $options.filterTypes.apply($options, arguments);
+    }),
+    value: "hi1000"
+  }, null, 544
+  /* HYDRATE_EVENTS, NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.checkedFiltersPrices]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Більше 1000 грн за добу (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.typesReactive.upperThousand ? $options.typesReactive.upperThousand : 0) + ")", 1
+  /* TEXT */
+  )])])])]), _hoisted_26])]), $data.filtersOn ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_27, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", _hoisted_28, "Показано відфільтрованих помешкань: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.filteredStays.length), 1
+  /* TEXT */
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div v-for=\"filter in checkedFilters\" :key=\"checkedFilters\">\n            <div class=\"btn-group\" role=\"group\" aria-label=\"Basic outlined example\">\n                <button type=\"button\" class=\"btn btn-outline-primary disabled\"> {{filter}} </button>\n                <button type=\"button\" class=\"btn btn-outline-primary\">X</button>\n\n            </div>\n        </div>"), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.filteredStays, function (stay) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       "class": "card mb-3",
       key: stay.id
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_27, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
       href: 'stays/' + stay.id
     }, [stay.image ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", {
       key: 0,
@@ -23240,30 +23696,67 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       "class": "card-img-stays p-2"
     }, null, 8
     /* PROPS */
-    , _hoisted_29)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("svg", _hoisted_30, _hoisted_34))], 8
+    , _hoisted_32)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("svg", _hoisted_33, _hoisted_37))], 8
     /* PROPS */
-    , _hoisted_28)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_36, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_37, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+    , _hoisted_31)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_38, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_39, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_40, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
       href: 'stays/' + stay.id
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_39, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stay.title), 1
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_42, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stay.title), 1
     /* TEXT */
     )], 8
     /* PROPS */
-    , _hoisted_38), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_40, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", _hoisted_41, [_hoisted_42, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, [stay.type === 'hotel' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_43, "Готель")) : stay.type === 'apartment' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_44, "Квартира")) : stay.type === 'resort' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_45, "Курорт")) : stay.type === 'villa' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_46, "Вілла")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_47, "Котедж"))])])]), _hoisted_48]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_49, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", _hoisted_50, [_hoisted_51, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_52, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stay.location), 1
+    , _hoisted_41), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_43, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", _hoisted_44, [_hoisted_45, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, [stay.type === 'hotel' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_46, "Готель")) : stay.type === 'apartment' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_47, "Квартира")) : stay.type === 'resort' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_48, "Курорт")) : stay.type === 'villa' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_49, "Вілла")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_50, "Котедж"))])])]), _hoisted_51]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_52, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", _hoisted_53, [_hoisted_54, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_55, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stay.location), 1
     /* TEXT */
-    )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_53, [_hoisted_54, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stay.description), 1
+    )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_56, [_hoisted_57, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stay.description), 1
     /* TEXT */
-    )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_55, [_hoisted_56, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stay.amenities), 1
+    )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_58, [_hoisted_59, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stay.amenities), 1
     /* TEXT */
-    )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_57, [_hoisted_58, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stay.rooms), 1
+    )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_60, [_hoisted_61, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stay.rooms), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_59, [_hoisted_60, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stay.beds), 1
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_62, [_hoisted_63, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stay.beds), 1
     /* TEXT */
-    )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", _hoisted_61, [_hoisted_62, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stay.price) + " грн.", 1
+    )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", _hoisted_64, [_hoisted_65, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stay.price) + " грн.", 1
     /* TEXT */
-    )]), _hoisted_63])])])]);
+    )]), _hoisted_66])])])]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <Pagination  :data=\"stays\" @pagination-change-page=\"getStays\" align=\"center\" activeClassIn=\"false\">\n        <template #prev-nav>\n            <span>&lt; Попередня</span>\n        </template>\n        <template #next-nav>\n            <span>Наступна &gt;</span>\n        </template>\n        <template #active-nav>\n            <span>Поточна&gt;</span></template>\n    </Pagination>")], 64
+  ))])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_67, [$data.stays.length ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h5", _hoisted_68, "Знайдено помешкань: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.stays.length), 1
+  /* TEXT */
+  )) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h5", _hoisted_69, "Пoмешкань не знайдено ")), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.stays, function (stay) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
+      "class": "card mb-3",
+      key: stay.id
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_70, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_71, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+      href: 'stays/' + stay.id
+    }, [stay.image ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", {
+      key: 0,
+      src: 'uploads/stays/' + stay.image,
+      "class": "card-img-stays p-2"
+    }, null, 8
+    /* PROPS */
+    , _hoisted_73)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("svg", _hoisted_74, _hoisted_78))], 8
+    /* PROPS */
+    , _hoisted_72)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_79, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_80, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_81, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+      href: 'stays/' + stay.id
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_83, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stay.title), 1
+    /* TEXT */
+    )], 8
+    /* PROPS */
+    , _hoisted_82), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_84, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", _hoisted_85, [_hoisted_86, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, [stay.type === 'hotel' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_87, "Готель")) : stay.type === 'apartment' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_88, "Квартира")) : stay.type === 'resort' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_89, "Курорт")) : stay.type === 'villa' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_90, "Вілла")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_91, "Котедж"))])])]), _hoisted_92]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_93, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", _hoisted_94, [_hoisted_95, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_96, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stay.location), 1
+    /* TEXT */
+    )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_97, [_hoisted_98, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stay.description), 1
+    /* TEXT */
+    )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_99, [_hoisted_100, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stay.amenities), 1
+    /* TEXT */
+    )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_101, [_hoisted_102, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stay.rooms), 1
+    /* TEXT */
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_103, [_hoisted_104, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stay.beds), 1
+    /* TEXT */
+    )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", _hoisted_105, [_hoisted_106, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stay.price) + " грн.", 1
+    /* TEXT */
+    )]), _hoisted_107])])])]);
+  }), 128
+  /* KEYED_FRAGMENT */
+  ))]))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <Pagination  :data=\"stays\" @pagination-change-page=\"getStays\" align=\"center\" activeClassIn=\"false\">\n        <template #prev-nav>\n            <span>&lt; Попередня</span>\n        </template>\n        <template #next-nav>\n            <span>Наступна &gt;</span>\n        </template>\n        <template #active-nav>\n            <span>Поточна&gt;</span></template>\n    </Pagination>")], 64
   /* STABLE_FRAGMENT */
   );
 }
