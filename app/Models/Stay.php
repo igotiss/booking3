@@ -21,4 +21,22 @@ class Stay extends Model
         'price',
         'user_id',
     ];
+
+    public function ratings()
+    {
+        return $this->hasMany('App\Models\Rating');
+    }
+
+    public function getAvgRating() {
+        return collect($this->ratings->pluck('rating'))->avg();
+    }
+
+    public function checkIsUserVoted() {
+        $user = auth()->id();
+        $filtered = $this->ratings->pluck("user_id")->first(function ($value) use ($user) {
+            return $value == $user ;
+        });
+
+        return $filtered ? 1 : 0;
+    }
 }

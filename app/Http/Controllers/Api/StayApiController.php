@@ -22,7 +22,7 @@ class StayApiController extends Controller
      */
     public function index()
     {
-        return StayResource::collection(Stay::orderBy('created_at', 'desc')->get());
+        return StayResource::collection(Stay::with('ratings')->orderBy('created_at', 'desc')->get());
     }
 
     public function getTypes() {
@@ -32,6 +32,12 @@ class StayApiController extends Controller
         $types['villas'] = Stay::where('type', 'villa')->count();
         $types['cottages'] = Stay::where('type', 'cottage')->count();
         return $types;
+    }
+
+    public function getRating ($stay_id) {
+        $rating = collect(Stay::with('ratings')->where('id', $stay_id)->get()->pluck('ratings'));
+        //dd($rating);
+        return $rating;
     }
 
 

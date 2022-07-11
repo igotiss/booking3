@@ -33,9 +33,29 @@
                                     @else($stay->type === 'cottage')
                                         <strong> Котедж </strong></small>
                                     @endif
+
                                 </p>
-                                <h5>Рейтинг 9.8</h5>
+
+                                <show-rating
+                                    :auth-voted="{{$authVoted}}"
+                                    :rating="{{$avgRating}}"
+                                    :stay-id="{{$stay->id}}"
+                                    :auth-id="{{auth()->id()}}"
+                                ></show-rating>
+
+<!--                                <form action="{{route('stays.rating', $stay->id)}}" method="POST">
+                                    @csrf
+                                    <input type="radio" name="rating" value="1">
+                                    <input type="radio" name="rating" value="2">
+                                    <input type="radio" name="rating" value="3">
+                                    <input type="radio" name="rating" value="4">
+                                    <input type="radio" name="rating" value="5">
+                                    <button type="submit" class="btn btn-outline-primary">голосувати</button>
+                                </form>-->
                             </div>
+
+
+
 
                             <p class="card-text me-2"><small class="text-muted">Локація: <span
                                         class="stay-location">{{ $stay->location }}</span></small>
@@ -57,12 +77,10 @@
 
 
                             <h5 class="card-text stay-price">Ціна: <strong> {{$stay->price}} грн.</strong></h5>
-                            <div class="input-group  mt-3 p-3">
-                                <a href="{{route('stays.edit',$stay->id)}}">
-                                    <button class="btn btn-outline-success">
-                                        Керувати бронюванням
-                                    </button>
-                                </a>
+
+
+                                @if ($stay->user_id === auth()->id())
+                                <div class="input-group  mt-3 p-3">
                                 <button class="btn btn-outline-primary">
                                     <a href="{{route('stays.edit',$stay->id)}}">Редагувати</a>
                                 </button>
@@ -76,13 +94,17 @@
                                     @method('delete')
                                     @csrf
                                 </form >
-
-                            </div>
-
+                                </div>
+                                @else
+                                    <a href="{{route('stays.edit',$stay->id)}}">
+                                        <button class="btn btn-outline-success">
+                                            Забронювати
+                                        </button>
+                                    </a>
+                                @endif
                         </div>
                     </div>
                 </div>
             </div>
-
-
 @endsection
+

@@ -7,6 +7,12 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+// Font awesome
+@import "node_modules/font-awesome/scss/font-awesome.scss";
+
+// jquery UI
+@import '~jquery-ui/themes/base/all.css';
+
 a, a:hover, a:focus, a:active  {
     text-decoration: none;
     color: inherit;
@@ -46,3 +52,153 @@ li {
     display: inline-block;
 }
 
+.rating {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2px;
+    color: #b7b7b7;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 6px 33px rgba(19, 18, 18, 0.09);
+    .list {
+        padding: 0;
+        margin: 0 15px 0 15px ;
+        &:hover {
+            .star {
+                color: #ffe100;
+            }
+        }
+        .star {
+            display: inline-block;
+            font-size: 20px;
+            transition: all .2s ease-in-out;
+            cursor: pointer;
+            &:hover {
+                ~ .star:not(.active) {
+                    color: inherit;
+                }
+            }
+            &:first-child {
+                margin-left: 0;
+            }
+            &.active {
+                color: #ffe100;
+            }
+        }
+    }
+    .info {
+        font-size: 15px;
+        text-align: center;
+        display: table;
+        .divider {
+            margin: 0 5px;
+            font-size: 15px;
+        }
+        .score-max {
+            font-size: 20px;
+            vertical-align: sub;
+        }
+    }
+}
+
+/**
+ * Modals ($modals)
+ */
+
+
+.popup-overlay {
+    /*Hides pop-up when there is no "active" class*/
+    visibility: hidden;
+    position: absolute;
+    background: #ffffff;
+    border: 3px solid #666666;
+    width: 14%;
+    height: 35%;
+
+}
+
+.popup-overlay.active {
+    /*displays pop-up when "active" class is present*/
+    visibility: visible;
+    text-align: center;
+    overflow-y: auto;
+    transition: all 0.4s;
+}
+
+.popup-content {
+    /*Hides pop-up content when there is no "active" class */
+    visibility: hidden;
+}
+
+.popup-content.active {
+    /*Shows pop-up content when "active" class is present */
+    visibility: visible;
+}
+
+button {
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 30px;
+    margin: .20rem;
+    font-size: 1rem;
+    color: #666666;
+    background: #ffffff;
+    border: 1px solid #666666;
+}
+
+button:hover {
+    border: 1px solid #666666;
+    background: #666666;
+    color: #ffffff;
+}
+
+
+
+
+
+
+.modal {
+    opacity: 0;
+    visibility: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow-y: auto;
+    transition: all 0.4s;
+    &__inner {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        min-height: 100%;
+        padding: 50px 0;
+    }
+    &__bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.6);
+        cursor: pointer;
+    }
+    &__cont {
+        position:relative;
+        width: 560px;
+        margin: 0 auto;
+        padding: 30px;
+        background-color: #fff;
+        border-radius: 30px;
+    }
+    &__text {
+        color: #000;
+        text-align: center;
+    }
+    &.is-show {
+        opacity: 1;
+        visibility: visible;
+    }
+}

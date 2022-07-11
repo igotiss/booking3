@@ -45,8 +45,7 @@
                                     @endif
                                 </p>
                                 <a href="{{route('stays.show', $stay->id)}}">
-                                    <h5>Рейтинг 9.8</h5>
-                                    4 відгуки
+                                    <show-rating :rating="{{$stay->getAvgRating()}}"></show-rating>
                                 </a>
                             </div>
 
@@ -82,32 +81,30 @@
 
 
                             <h5 class="card-text stay-price">Ціна: <strong> {{$stay->price}} грн.</strong></h5>
-                            <div class="input-group  mt-3 p-3">
 
+                            @if ($stay->user_id === auth()->id())
+                                <div class="input-group  mt-3 p-3">
+                                    <button class="btn btn-outline-primary">
+                                        <a href="{{route('stays.edit',$stay->id)}}">Редагувати</a>
+                                    </button>
+
+                                    <form action="{{route('stays.destroy',$stay->id)}}" method="post">
+                                        <button class="btn btn-outline-danger"
+                                                onclick="return confirm('Ви впевнені, що потрібно видалити об*яву?')"
+                                                type="submit">
+                                            Видалити
+                                        </button>
+                                        @method('delete')
+                                        @csrf
+                                    </form >
+                                </div>
+                            @else
                                 <a href="{{route('stays.edit',$stay->id)}}">
                                     <button class="btn btn-outline-success">
-                                        Керувати бронюванням
+                                        Забронювати
                                     </button>
                                 </a>
-                                <a href="{{route('stays.edit',$stay->id)}}">
-                                    <button class="btn btn-outline-primary">
-                                        Редагувати
-                                    </button>
-                                </a>
-
-                                <form action="{{route('stays.destroy',$stay->id)}}" method="post">
-                                    <button class="btn btn-outline-danger"
-                                            onclick="return confirm('Ви впевнені, що потрібно видалити об*яву?')"
-                                            type="submit">
-                                        Видалити
-                                    </button>
-                                    @method('delete')
-                                    @csrf
-                                </form >
-
-
-
-                            </div>
+                            @endif
 
                         </div>
                     </div>

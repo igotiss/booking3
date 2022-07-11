@@ -24,7 +24,8 @@ class StayResource extends JsonResource
             'beds' => $this->beds,
             'type' =>  $this->type,
             'location' => ucfirst($this->location),
-            'price' => $this->price
+            'price' => $this->price,
+            'ratings' => $this->ratings->avg('rating')
         ];
     }
 }

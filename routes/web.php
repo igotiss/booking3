@@ -45,6 +45,7 @@ Route::prefix('stays')
         Route::get('/edit/{stay}', [\App\Http\Controllers\StayController::class, 'edit'])->name('edit');
         Route::patch('/{stay}', [\App\Http\Controllers\StayController::class, 'update'])->name('update');
         Route::delete('/{stay}', [\App\Http\Controllers\StayController::class, 'destroy'])->name('destroy');
+        Route::post('/rating/{stay}', [\App\Http\Controllers\RatingController::class, 'rate'])->name('rating');
     });
 
 

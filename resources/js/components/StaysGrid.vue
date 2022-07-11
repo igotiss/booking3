@@ -9,9 +9,8 @@
                         <input type="text"  placeholder="Дата заїзду" class="form-control" onfocus="(this.type = 'date')">
                         <input type="text"  placeholder="Дата виїзду" class="form-control" onfocus="(this.type = 'date')">
                         <input class="form-control" type="number" v-model="searchRooms" placeholder="Кількість номерів" aria-label="Search">
-                        <input class="form-control" type="number" placeholder="Кількість ліжок" aria-label="Search">
+                        <input class="form-control" type="number" placeholder="Кількість туристів" aria-label="Search">
                         <button class="btn btn-outline-warning"  @click.prevent="searchedStays">Шукати</button>
-
                     </div>
                 </form>
             </div>
@@ -19,7 +18,6 @@
     </div>
 
 <div class="d-flex">
-
     <div class="flex-shrink-0 p-3 bg-white border border-info" style="width: 280px;">
         <a href="#" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
             <svg class="bi pe-none me-2" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
@@ -77,13 +75,7 @@
     <div class="content p-3" v-if="filtersOn">
         <h5 class="mt-3 p-3" >Показано відфільтрованих помешкань: {{filteredStays.length}} </h5>
 
-<!--        <div v-for="filter in checkedFilters" :key="checkedFilters">
-            <div class="btn-group" role="group" aria-label="Basic outlined example">
-                <button type="button" class="btn btn-outline-primary disabled"> {{filter}} </button>
-                <button type="button" class="btn btn-outline-primary">X</button>
 
-            </div>
-        </div>-->
 
         <div class="card mb-3 " v-for="stay in filteredStays" :key="stay.id">
             <div class="row g-0">
@@ -108,8 +100,13 @@
                                 <span v-else-if="stay.type === 'villa'">Вілла</span>
                                 <span v-else="stay.type === 'cottage'">Котедж</span>
                             </strong></small></p>
-                            <a href="#">
-                                <h5>Рейтинг 9.8</h5>
+
+                            <a :href="'stays/'+stay.id">
+                                <show-rating
+
+
+                                ></show-rating>
+
                                 4 відгуки
                             </a>
                         </div>
@@ -167,8 +164,9 @@
                                 <span v-else-if="stay.type === 'villa'">Вілла</span>
                                 <span v-else="stay.type === 'cottage'">Котедж</span>
                             </strong></small></p>
-                            <a href="#">
-                                <h5>Рейтинг 9.8</h5>
+                            <a :href="'stays/'+stay.id">
+                                    <show-rating :rating="stay.ratings"></show-rating>
+
                                 4 відгуки
                             </a>
                         </div>
@@ -217,14 +215,14 @@
 
 <script>
 
-import {forEach} from "lodash";
+
 
 export default {
     name: "StaysGrid",
     data() {
         return {
             searchLocation: "",
-            searchRooms: 0,
+            searchRooms: [],
             stays: {},
             filteredStays: [],
             checkedFiltersTypes: [],
@@ -285,7 +283,6 @@ export default {
                 if(filtersArr.amenitiesON || filtersArr.typesON) {
                     resourceType = this.filteredStays;
                 }
-
                 let tempArr = [];
                 let tempArr2 = [];
                 for (let i=0; i<this.checkedFiltersPrices.length; i++) {
@@ -303,8 +300,6 @@ export default {
                             tempArr.push( resourceType.filter(stay => stay.price >= 1000 ));
                             break;
                     }
-
-
                 }
                 for (let i=0; i<tempArr.length; i++) {
                     tempArr2=tempArr2.concat(tempArr[i]);

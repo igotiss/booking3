@@ -13,8 +13,7 @@ class StayController extends Controller
      *
      *
      */
-    public function index()
-    {
+    public function index()    {
 
         $stays = Stay::where('user_id', auth()->id())->get()->sortByDesc("created_at");
         return view('pages.stays.index', compact('stays'));
@@ -49,7 +48,7 @@ class StayController extends Controller
         }
         $validated['user_id'] = auth()->id();
 
-
+        dd($validated);
         Stay::create($validated);
 
         return redirect(route('stays.own_index'))->with('success', 'оголошення успішно збережено');
@@ -63,8 +62,14 @@ class StayController extends Controller
      */
     public function show(Stay $stay)
     {
+        $authVoted = $stay->checkIsUserVoted();
 
-        return view('pages.stays.show', compact('stay'));
+        if(!$stay->getAvgRating()) {
+            $avgRating = 0;
+        } else {
+            $avgRating = $stay->getAvgRating();
+        };
+        return view('pages.stays.show', compact('stay', 'authVoted', 'avgRating'));
     }
 
     /**
