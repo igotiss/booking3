@@ -4,7 +4,26 @@
     @if($stays->isEmpty())
         <h5>На даний час немає жодного опублікованого помешкання</h5>
     @else
-        <h5 class="mt-3">Вами опубліковано {{$stays->count()}} помешкань. Із них заброньовано {{$stays->count()}} </h5>
+        <h5 class="mt-3">
+            Вами опубліковано {{$stays->count()}} помешкань. Із них
+
+            <button type="button"  class="btn btn-primary position-relative m-3">
+                Заброньовано
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    {{$bookings->count()}}
+                </span>
+            </button>
+
+            <button type="button" class="btn btn-warning position-relative">
+                потребують підтвердження
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    {{$bookingsPending->count()}}
+                </span>
+            </button>
+
+
+
+        </h5>
 
         @foreach($stays as $stay)
             <div class="card mb-3">

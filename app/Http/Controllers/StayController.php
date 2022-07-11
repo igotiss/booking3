@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StayRequest;
+use App\Models\Booking;
 use App\Models\Stay;
 use Illuminate\Http\Request;
 
@@ -14,9 +15,11 @@ class StayController extends Controller
      *
      */
     public function index()    {
+        $bookings = Booking::where('user_id', auth()->id())->get();
+        $bookingsPending =Booking::where('status', 'pending')->get();
 
         $stays = Stay::where('user_id', auth()->id())->get()->sortByDesc("created_at");
-        return view('pages.stays.index', compact('stays'));
+        return view('pages.stays.index', compact('stays', 'bookings', 'bookingsPending'));
     }
 
     /**

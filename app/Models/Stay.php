@@ -39,4 +39,9 @@ class Stay extends Model
 
         return $filtered ? 1 : 0;
     }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
 }
