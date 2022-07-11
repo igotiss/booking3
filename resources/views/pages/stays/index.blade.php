@@ -5,24 +5,21 @@
         <h5>На даний час немає жодного опублікованого помешкання</h5>
     @else
         <h5 class="mt-3">
-            Вами опубліковано {{$stays->count()}} помешкань. Із них
-
+            Вами опубліковано {{$stays->count()}} помешкань. Із них:
+            <a href="{{route('booking.index')}}">
             <button type="button"  class="btn btn-primary position-relative m-3">
-                Заброньовано
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    {{$bookings->count()}}
-                </span>
-            </button>
+                Заброньовано:     {{$bookings->count()}}
 
+            </button>
+            @if($bookingsPending->count())
             <button type="button" class="btn btn-warning position-relative">
                 потребують підтвердження
                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                     {{$bookingsPending->count()}}
                 </span>
             </button>
-
-
-
+            </a>
+            @endif
         </h5>
 
         @foreach($stays as $stay)
@@ -76,7 +73,8 @@
 
                             <p class="card-text">
                                 Опис:
-                                <i>{{$stay->description}}</i></p>
+                                <i>{{$stay->description}}</i>
+                            </p>
 
                             <p class="card-text">
                                 Зручності:
@@ -85,8 +83,6 @@
                                 @else
                                     <i>відсутні</i>
                                 @endif
-
-
                             </p>
                             <p class="card-text ">
                                 Кімнат:

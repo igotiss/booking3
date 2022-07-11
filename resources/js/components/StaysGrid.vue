@@ -74,9 +74,6 @@
 
     <div class="content p-3" v-if="filtersOn">
         <h5 class="mt-3 p-3" >Показано відфільтрованих помешкань: {{filteredStays.length}} </h5>
-
-
-
         <div class="card mb-3 " v-for="stay in filteredStays" :key="stay.id">
             <div class="row g-0">
                 <div class="col-md-4 stay-image p-2">
@@ -130,8 +127,9 @@
                             </span>
                         </p>
                         <h5 class="card-text stay-price">Ціна: <strong> {{stay.price}} грн.</strong></h5>
-
-                        <button  class="btn btn-primary mt-3">Забронювати</button>
+                        <a :href="'booking/'+stay.id">
+                            <button  class="btn btn-primary mt-3">Забронювати</button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -188,10 +186,17 @@
                                 Ліжок:
                                 <strong>{{stay.beds}}</strong>
                             </span>
+
+                            <span class="card-text p-2">
+                                Деталі оплати:
+                                <strong>предоплата</strong>
+                            </span>
+
                         </p>
                         <h5 class="card-text stay-price">Ціна: <strong> {{stay.price}} грн.</strong></h5>
-
-                        <button  class="btn btn-primary mt-3">Забронювати</button>
+                        <a :href="'booking/'+stay.id">
+                            <button  class="btn btn-primary mt-3">Забронювати</button>
+                        </a>
                     </div>
                 </div>
             </div>

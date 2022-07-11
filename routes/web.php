@@ -48,13 +48,20 @@ Route::prefix('stays')
 
         //Rating
         Route::post('/rating/{stay}', [\App\Http\Controllers\RatingController::class, 'rate'])->name('rating');
+    });
+Route::get('create', [\App\Http\Controllers\StayController::class, 'create'])->name('create')->middleware('verified');
 
-        //Booking
-        Route::get('/booking/{stay}', [\App\Http\Controllers\BookingController::class, 'create'])->name('booking.create');
-        Route::post('/booking/', [\App\Http\Controllers\BookingController::class, 'store'])->name('booking.store');
+//Booking
+Route::prefix('booking')
+    ->name('booking.')
+    ->middleware('verified')
+    ->group(function (){
+        Route::get('/{stay}', [\App\Http\Controllers\BookingController::class, 'create'])->name('create');
+        Route::post('/', [\App\Http\Controllers\BookingController::class, 'store'])->name('store');
+        Route::get('/', [\App\Http\Controllers\BookingController::class, 'index'])->name('index');
+        Route::post('/change/', [\App\Http\Controllers\BookingController::class, 'changeStatus'])->name('change');
 
     });
+Route::get('/own_booking/', [\App\Http\Controllers\BookingController::class, 'indexOwn'])->name('booking.own-index')->middleware('verified');
 
-
-Route::get('create', [\App\Http\Controllers\StayController::class, 'create'])->name('create')->middleware('verified');
 

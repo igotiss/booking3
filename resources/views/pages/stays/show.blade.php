@@ -96,7 +96,7 @@
                                 </form >
                                 </div>
                                 @else
-                                    <a href="{{route('stays.edit',$stay->id)}}">
+                                    <a href="{{route('booking.create',$stay->id)}}">
                                         <button class="btn btn-outline-success">
                                             Забронювати
                                         </button>

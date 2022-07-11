@@ -1,8 +1,7 @@
 @extends('layouts.app')
 @section('content')
-
-
-    <div class="card  col-md-7" >
+    <div class="row justify-content-md-center">
+    <div class="card  col-md-8" >
         <div class="m-3 d-flex justify-content-center " >
             @if ($stay->image)
                 <img src="/uploads/stays/{{$stay->image}}" class="card-img-stays " alt="{{$stay->title}}">
@@ -28,17 +27,20 @@
 
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
-                <form action="{{route('stays.booking.store')}}" method="post" class="d-flex ">
+                <form action="{{route('booking.store')}}" method="post" class="d-flex ">
                     @csrf
                     <h5 class="col-md-5">Оберіть період бронювання: </h5>
                     <input type="text" name="start_date" placeholder="Дата заїзду" class="form-control " onfocus="(this.type = 'date')">
                     <input type="text" name="end_date" placeholder="Дата виїзду" class="form-control " onfocus="(this.type = 'date')">
-                    <input type="hidden" id="custId" name="stay_id" value="{{$stay->id}}">
+                    <input type="hidden" name="stay_id" value="{{$stay->id}}">
+                    <input type="hidden" name="owner_id" value="{{$stay->user_id}}">
+
                     <submit> <button class="btn btn-outline-success">Забронювати</button> </submit>
 
                 </form>
             </li>
             <li class="list-group-item">
+                @if ($bookings->count())
                 <h5 class="text-center">Статус бронюваннь: </h5>
             <table class="table">
                 <thead>
@@ -51,7 +53,9 @@
                 </tr>
                 </thead>
                 <tbody>
+
                 @foreach($bookings as $booking)
+
                 <tr>
                     <th scope="row">{{$loop->iteration}}</th>
                     <td> {{$booking->id}}</td>
@@ -72,14 +76,20 @@
                         @endswitch
                     </td>
                 </tr>
+
+
                 @endforeach
                 </tbody>
             </table>
+                @else
+                   <h5 class="text-center">Ви не бронювали це помешкання</h5>
+                @endif
             </li>
         </ul>
         <div class="card-body ">
 
         </div>
+    </div>
     </div>
 
 @endsection

@@ -27,7 +27,8 @@ class BookingRequest extends FormRequest
         return [
             'start_date' => 'required|date',
             'end_date' => 'required|date|after:start_date',
-            'stay_id' => 'required'
+            'stay_id' => 'required',
+            'owner_id' => 'required'
 
         ];
     }

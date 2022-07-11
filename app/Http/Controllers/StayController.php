@@ -15,8 +15,8 @@ class StayController extends Controller
      *
      */
     public function index()    {
-        $bookings = Booking::where('user_id', auth()->id())->get();
-        $bookingsPending =Booking::where('status', 'pending')->get();
+        $bookings = Booking::where('owner_id', auth()->id())->get();
+        $bookingsPending =Booking::where('owner_id', auth()->id())->where('status', 'pending')->get();
 
         $stays = Stay::where('user_id', auth()->id())->get()->sortByDesc("created_at");
         return view('pages.stays.index', compact('stays', 'bookings', 'bookingsPending'));
@@ -29,7 +29,6 @@ class StayController extends Controller
      */
     public function create()
     {
-
         return view('pages.stays.create');
     }
 
@@ -51,7 +50,6 @@ class StayController extends Controller
         }
         $validated['user_id'] = auth()->id();
 
-        dd($validated);
         Stay::create($validated);
 
         return redirect(route('stays.own_index'))->with('success', 'оголошення успішно збережено');
@@ -93,7 +91,6 @@ class StayController extends Controller
      */
     public function update(StayRequest $request, Stay $stay)
     {
-
 
         $validated = $request->validated();
 

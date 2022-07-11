@@ -14,6 +14,7 @@ class Booking extends Model
         'end_date',
         'status',
         'user_id',
+        'owner_id',
         'stay_id'
     ];
 

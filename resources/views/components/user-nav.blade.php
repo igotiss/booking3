@@ -13,16 +13,27 @@
                         <a  @if(Route::currentRouteName()==='home') class="nav-link active"
                             @else class="nav-link "
                             @endif
-                            href="{{route('home')}}">Усі об'яви</a>
+                            href="{{route('home')}}">Усі оголошення</a>
                     </li>
                     <li class="nav-item">
                         <a @if(Route::currentRouteName()==='stays.own_index') class="nav-link active"
                            @else class="nav-link "
                            @endif
-                           href="{{route('stays.own_index')}}">Мої об'яви</a>
+                           href="{{route('stays.own_index')}}">Мої оголошення</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="#">Бронювання</a>
+                        <a @if(Route::currentRouteName()==='booking.index') class="nav-link active"
+                           @else class="nav-link "
+                           @endif
+                           href="{{route('booking.index')}}">Керування бронюваннями</a>
+
+                    </li>
+                    <li class="nav-item">
+                        <a @if(Route::currentRouteName()==='booking.own-index') class="nav-link active"
+                           @else class="nav-link "
+                           @endif
+                           href="{{route('booking.own-index')}}">Мої бронювання</a>
+
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Відгуки</a>
@@ -31,7 +42,7 @@
                         <a @if(Route::currentRouteName()==='profile.show') class="nav-link active"
                            @else class="nav-link "
                            @endif
-                            class="nav-link" href="{{route('profile.show')}}">Налаштування</a>
+                            class="nav-link" href="{{route('profile.show')}}">Керувати аккаунтом</a>
                     </li>
 
 
