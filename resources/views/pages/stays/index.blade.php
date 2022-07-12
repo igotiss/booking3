@@ -2,7 +2,13 @@
 @section('content')
 
     @if($stays->isEmpty())
-        <h5>На даний час немає жодного опублікованого помешкання</h5>
+        <div class="row justify-content-center">
+            <h5 class="text-center">На даний час ви не зареєстрували жодного помешкання, але це не проблема ;)</h5>
+            <button type="button" class="btn btn-warning m-2 col col-lg-2">
+                <a href="{{route('create')}}">Зареєструвати помешкання</a>
+            </button>
+        </div>
+
     @else
         <h5 class="mt-3">
             Вами опубліковано {{$stays->count()}} помешкань. Із них:
