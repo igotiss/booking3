@@ -36,7 +36,6 @@ class StayApiController extends Controller
 
     public function getRating ($stay_id) {
         $rating = collect(Stay::with('ratings')->where('id', $stay_id)->get()->pluck('ratings'));
-        //dd($rating);
         return $rating;
     }
 

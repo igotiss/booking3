@@ -2,7 +2,9 @@
 @section('content')
 
 
-            <div class="card mb-3">
+    <!--Stay-->
+
+    <div class="card mb-3">
                 <div class="row g-0">
                     @if ($stay->image)
                         <img src="../uploads/stays/{{$stay->image}}" class="card-img-stays p-2" alt="{{$stay->title}}">
@@ -16,7 +18,7 @@
                             </svg>
                         </div>
                     @endif
-                    <div class="col-md-8">
+                    <div class="col">
                         <div class="card-body pb-2">
                             <div class="d-flex flex-row justify-content-between align-items-baseline">
                                 <h3 class="card-title">{{$stay->title}}</h3>
@@ -42,24 +44,19 @@
                                     :stay-id="{{$stay->id}}"
                                     :auth-id="{{auth()->id()}}"
                                 ></show-rating>
-
-<!--                                <form action="{{route('stays.rating', $stay->id)}}" method="POST">
-                                    @csrf
-                                    <input type="radio" name="rating" value="1">
-                                    <input type="radio" name="rating" value="2">
-                                    <input type="radio" name="rating" value="3">
-                                    <input type="radio" name="rating" value="4">
-                                    <input type="radio" name="rating" value="5">
-                                    <button type="submit" class="btn btn-outline-primary">голосувати</button>
-                                </form>-->
                             </div>
 
+                            <div class="d-flex justify-content-between">
+                                <p class="card-text me-2"><small class="text-muted">
+                                        Локація:
+                                        <span class="stay-location">{{ $stay->location }}</span></small>
+                                </p>
+                                <p class="card-text mt-2 text-secondary">
+                                        Відгуків:
+                                        <span class="stay-location">{{$stay->feedbacks->count()}} </span>
+                                </p>
+                            </div>
 
-
-
-                            <p class="card-text me-2"><small class="text-muted">Локація: <span
-                                        class="stay-location">{{ $stay->location }}</span></small>
-                            </p>
 
                             <p class="card-text"><span>Опис: </span><i>{{$stay->description}}</i></p>
 
@@ -101,10 +98,77 @@
                                             Забронювати
                                         </button>
                                     </a>
+                                <a href="{{route('feedback.create',$stay->id)}}">
+                                    <button class="btn btn-outline-info">
+                                        Залишити відгук
+                                    </button>
+                                </a>
                                 @endif
                         </div>
                     </div>
                 </div>
             </div>
+
+
+    <!--Feedbacks-->
+
+    <h4>Відгуки: {{$stay->feedbacks->count()}}</h4>
+    <div class="d-flex flex-wrap">
+        @if ($stay->feedbacks->count())
+            @foreach($feedbacks as $feedback)
+            <div class="card m-3" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">
+                    {{$feedback->description}}
+                </h5>
+            </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+
+                        @switch($feedback->mark)
+                            @case('best')
+                                <span class="badge bg-success">Дуже добре!!! :)))</span>
+                                @break
+                            @case('good')
+                                <span class="badge bg-success bg-opacity-75">Добре! :)</span>
+                                @break
+                            @case('middle')
+                                <span class="badge bg-warning">Посередньо :|</span>
+                                @break
+                            @case('badly')
+                                <span class="badge bg-danger bg-opacity-75">Погано! :(</span>
+                                @break
+                            @case('worst')
+                                <span class="badge bg-danger">Дуже погано!!! :(((</span>
+                                @break
+                        @endswitch
+                    </li>
+                    <li class="list-group-item"><small>Користувач: <i>{{$feedback->user->name}}</i></small></li>
+                    <li class="list-group-item"><small>Дата: <i>{{$feedback->created_at}}</i></small></li>
+                </ul>
+                @if($feedback->user->id===auth()->id())
+                <div class="card-body d-flex">
+                    <a href="{{route('feedback.edit', $feedback->id)}}" class="card-link">
+                       <button class="btn btn-outline-info">Редагувати</button>
+                    </a>
+                    <form action="{{route('feedback.delete', $feedback->id)}}"
+                          onclick="return confirm('Ви впевнені, що потрібно видалити відгук?')"
+                          method="post">
+                        @csrf
+                        @method('delete')
+                            <button type="submit" class="btn btn-outline-danger">Видалити</button>
+                    </form>
+
+                </div>
+                @endif
+
+            </div>
+            @endforeach
+    </div>
+        @else
+            коментарів ще не залишив жоден користувач
+        @endif
+
+
 @endsection
 

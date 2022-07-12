@@ -20,13 +20,16 @@ class BookingController extends Controller
 
     public function changeStatus(Request $request) {
         $booking = Booking::where('id',$request->id)->first();
-
+        if($booking->owner_id != auth()->id()) {
+            return back()->withErrors(__('errors.you_not_owner'));
+        }
         $booking->update(['status' => $request->status]);
         return redirect(route('booking.index'))->with('success', 'статус змінено успішно!');
 
     }
 
-    public function create(Stay $stay) {
+    public function create(Stay $stay, Request $request) {
+
         $bookings = Booking::where('stay_id', $stay->id)
             ->where('user_id', auth()->id())
             ->get();
@@ -40,7 +43,6 @@ class BookingController extends Controller
         $validated['user_id'] = auth()->id();
         Booking::create($validated);
         return redirect(route('booking.create', $validated['stay_id']))->with('success', 'бронювання проведено, очікуйте на підтвердження власника');
-
     }
 }
 

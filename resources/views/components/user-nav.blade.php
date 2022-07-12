@@ -36,7 +36,10 @@
 
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Відгуки</a>
+                        <a @if(Route::currentRouteName()==='feedback.index') class="nav-link active"
+                           @else class="nav-link "
+                           @endif
+                           href="{{route('feedback.index')}}">Відгуки</a>
                     </li>
                     <li class="nav-item">
                         <a @if(Route::currentRouteName()==='profile.show') class="nav-link active"

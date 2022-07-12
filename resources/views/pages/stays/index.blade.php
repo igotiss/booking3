@@ -46,7 +46,7 @@
                         @endif
                     </a>
 
-                    <div class="col-md-8">
+                    <div class="col">
                         <div class="card-body pb-2">
                             <div class="d-flex flex-row justify-content-between align-items-baseline">
                                 <a href="{{route('stays.show', $stay->id)}}" class="">
@@ -71,11 +71,16 @@
                                 </a>
                             </div>
 
-                            <p class="card-text me-2">
-                                <small class="text-muted"> Локація:
-                                    <span>{{ $stay->location }}</span>
-                                </small>
-                            </p>
+                            <div class="d-flex justify-content-between">
+                                <p class="card-text me-2"><small class="text-muted">
+                                        Локація:
+                                        <span class="stay-location">{{ $stay->location }}</span></small>
+                                </p>
+                                <p class="card-text mt-2 text-secondary">
+                                    Відгуків:
+                                    <span class="stay-location">{{$stay->feedbacks->count()}} </span>
+                                </p>
+                            </div>
 
                             <p class="card-text">
                                 Опис:

@@ -15,6 +15,11 @@ class CreateFeedbackTable extends Migration
     {
         Schema::create('feedback', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('stay_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->enum('mark', ['best', 'good', 'middle', 'badly', 'worst']);
+            $table->integer('owner_id');
+            $table->text('description');
             $table->timestamps();
         });
     }

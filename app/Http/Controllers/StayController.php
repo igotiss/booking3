@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StayRequest;
 use App\Models\Booking;
+use App\Models\Feedback;
 use App\Models\Stay;
 use Illuminate\Http\Request;
 
@@ -63,14 +64,16 @@ class StayController extends Controller
      */
     public function show(Stay $stay)
     {
-        $authVoted = $stay->checkIsUserVoted();
+       $feedbacks = Feedback::where('stay_id', $stay->id)->get()->sortByDesc("created_at");
+
+       $authVoted = $stay->checkIsUserVoted();
 
         if(!$stay->getAvgRating()) {
             $avgRating = 0;
         } else {
             $avgRating = $stay->getAvgRating();
         };
-        return view('pages.stays.show', compact('stay', 'authVoted', 'avgRating'));
+        return view('pages.stays.show', compact('stay', 'authVoted', 'avgRating', 'feedbacks'));
     }
 
     /**

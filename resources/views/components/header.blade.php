@@ -70,12 +70,11 @@
                             {{ Auth::user()->name }}
                         </a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-
                             <a class="dropdown-item " href="{{route('stays.own_index')}}">Мої оголошення</a>
                             <a class="dropdown-item" href="{{route('booking.index')}}">Керування бронюваннями</a>
                             <a class="dropdown-item" href="{{route('booking.own-index')}}">Мої бронювання</a>
                             <a class="dropdown-item " href="{{route('profile.show')}}">Керувати аккаунтом</a>
-
+                            <a class="dropdown-item " href="{{route('feedback.index')}}">Відгуки</a>
                             <a class="dropdown-item " href="{{ route('logout') }}"
                                onclick="event.preventDefault();
                                document.getElementById('logout-form').submit();">

@@ -27,6 +27,12 @@ class Stay extends Model
         return $this->hasMany('App\Models\Rating');
     }
 
+    public function feedbacks()
+    {
+        return $this->hasMany('App\Models\Feedback');
+    }
+
+
     public function getAvgRating() {
         return collect($this->ratings->pluck('rating'))->avg();
     }

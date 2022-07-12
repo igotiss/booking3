@@ -165,10 +165,17 @@
                             <a :href="'stays/'+stay.id">
                                     <show-rating :rating="stay.ratings"></show-rating>
 
-                                4 відгуки
                             </a>
                         </div>
-                        <p class="card-text me-2"><small class="text-muted">Локація: <span class="stay-location">{{ stay.location }}</span></small></p>
+
+                        <div class="d-flex justify-content-between">
+                            <p class="card-text me-2">
+                                <small class="text-muted">Локація: <span class="stay-location">{{ stay.location }}</span></small>
+                            </p>
+                            <p class="card-text me-2">
+                            Відгуків: {{stay.feedbacks}}
+                            </p>
+                        </div>
                         <p class="card-text">
                             Опис:
                             <i>{{stay.description}}</i>

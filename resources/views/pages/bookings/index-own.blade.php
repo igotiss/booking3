@@ -13,7 +13,7 @@
                 <th scope="col">Дата заїзду</th>
                 <th scope="col">Дата виїзду</th>
                 <th scope="col">Статус</th>
-                <th scope="col">Адміністрування</th>
+
             </tr>
             </thead>
             <tbody>
@@ -39,29 +39,7 @@
                                 <span class="badge bg-secondary"> На розгляді власника... </span>
                         @endswitch
                     </td>
-                    <td>
-                        <div class="btn-group" role="group" aria-label="Basic example">
 
-                            @if($booking->status != 'active')
-                                <form action="{{route('booking.change')}}" method="post">
-                                    @csrf
-                                    <input type="hidden" name="status" value="active">
-                                    <input type="hidden" name="id" value="{{$booking->id}}">
-                                    <button type="submit" class="btn btn-success">Підтвердити</button>
-                                </form>
-                            @endif
-
-                            @if($booking->status != 'decline')
-                                <form action="{{route('booking.change')}}" method="post">
-                                    @csrf
-                                    <input type="hidden" name="status" value="decline">
-                                    <input type="hidden" name="id" value="{{$booking->id}}">
-                                    <button type="submit" class="btn btn-danger">Відхилити</button>
-                                </form>
-                            @endif
-
-                        </div>
-                    </td>
                 </tr>
             @endforeach
             </tbody>

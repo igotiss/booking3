@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use function Symfony\Component\Translation\t;
 
-class BookingRequest extends FormRequest
+class FeedbackRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,10 +24,10 @@ class BookingRequest extends FormRequest
     public function rules()
     {
         return [
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
             'stay_id' => 'required',
-            'owner_id' => 'required'
+            'owner_id' => 'required',
+            'mark' => 'required',
+            'description' => 'required|string|min:5|max:255',
         ];
     }
 }

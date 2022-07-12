@@ -22,7 +22,7 @@ Auth::routes(['verify' => true]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('verified');
 
-//User
+// Users
 
 Route::prefix('profile')
     ->name('profile.')
@@ -34,7 +34,7 @@ Route::prefix('profile')
     });
 
 
-//Stays
+// Stays
 Route::prefix('stays')
     ->name('stays.')
     ->middleware('verified')
@@ -46,12 +46,12 @@ Route::prefix('stays')
         Route::patch('/{stay}', [\App\Http\Controllers\StayController::class, 'update'])->name('update');
         Route::delete('/{stay}', [\App\Http\Controllers\StayController::class, 'destroy'])->name('destroy');
 
-        //Rating
+        // Rating
         Route::post('/rating/{stay}', [\App\Http\Controllers\RatingController::class, 'rate'])->name('rating');
     });
 Route::get('create', [\App\Http\Controllers\StayController::class, 'create'])->name('create')->middleware('verified');
 
-//Booking
+// Bookings
 Route::prefix('booking')
     ->name('booking.')
     ->middleware('verified')
@@ -65,3 +65,17 @@ Route::prefix('booking')
 Route::get('/own_booking/', [\App\Http\Controllers\BookingController::class, 'indexOwn'])->name('booking.own-index')->middleware('verified');
 
 
+// Feedbacks
+
+Route::prefix('feedback')
+    ->name('feedback.')
+    ->middleware('verified')
+    ->group(function (){
+        Route::get('/', [\App\Http\Controllers\FeedbackController::class, 'index'])->name('index');
+        Route::get('/{feedback}', [\App\Http\Controllers\FeedbackController::class, 'show'])->name('show');
+        Route::get('/{feedback}', [\App\Http\Controllers\FeedbackController::class, 'create'])->name('create');
+        Route::post('/', [\App\Http\Controllers\FeedbackController::class, 'store'])->name('store');
+        Route::get('/edit/{feedback}', [\App\Http\Controllers\FeedbackController::class, 'edit'])->name('edit');
+        Route::patch('/{feedback}', [\App\Http\Controllers\FeedbackController::class, 'update'])->name('update');
+        Route::delete('/{feedback}', [\App\Http\Controllers\FeedbackController::class, 'destroy'])->name('delete');
+    });
