@@ -17,7 +17,7 @@ class CreateFeedbackTable extends Migration
             $table->id();
             $table->foreignId('stay_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->enum('mark', ['best', 'good', 'middle', 'badly', 'worst']);
+            $table->enum('mark', [1, 2, 3, 4, 5]);
             $table->integer('owner_id');
             $table->text('description');
             $table->timestamps();

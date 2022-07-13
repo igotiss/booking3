@@ -11,11 +11,11 @@
                         <span class="input-group-text" id="basic-addon1">Оцініть помешкання</span>
                         <select class="form-control form-select" id="mark" name="mark" required>
                             <option  selected disabled>оберіть оцінку з списку...</option>
-                            <option value="best">Найкраще!!! :)))</option>
-                            <option value="good">Добре! :)</option>
-                            <option value="middle">Посередньо</option>
-                            <option value="badly">Погано :(</option>
-                            <option value="worst">Найгірше :(((</option>
+                            <option value=5>Найкраще!!! :)))</option>
+                            <option value=4>Добре! :)</option>
+                            <option value=3>Посередньо</option>
+                            <option value=2>Погано :(</option>
+                            <option value=1>Найгірше :(((</option>
                         </select>
                     </div>
                 </div>

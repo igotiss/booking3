@@ -17,10 +17,12 @@
         </nav>
     </div>
 
+<!--Filters-->
+
 <div class="d-flex">
     <div class="flex-shrink-0 p-3 bg-white border border-info" style="width: 280px;">
         <a href="#" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
-            <svg class="bi pe-none me-2" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
+
             <span class="fs-5 fw-bold">Сортувати за такими критеріями</span>
         </a>
         <ul class="list-unstyled ps-0">
@@ -69,8 +71,26 @@
 
             <li class="border-top my-3"></li>
 
+            <li class="mb-1">
+                <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+                    <h5 class="text-decoration-underline"> Зірковий рейтинг</h5>
+                </button>
+                <div class="collapse show" id="home-collapse">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><input type="checkbox" v-model="checkedFiltersPrices" @change="filterTypes" value="low99"> до 100 грн за добу ({{typesReactive.lowerHundred ? typesReactive.lowerHundred : 0}})</li>
+                        <li><input type="checkbox" v-model="checkedFiltersPrices" @change="filterTypes" value="100-500"> 100 - 499 грн за добу  ({{typesReactive.oneFiveHundred ? typesReactive.oneFiveHundred : 0}})</li>
+                        <li><input type="checkbox" v-model="checkedFiltersPrices" @change="filterTypes" value="500-1000">  500 - 999 грн за добу ({{typesReactive.fiveHundredThousand ? typesReactive.fiveHundredThousand : 0}})</li>
+                        <li><input type="checkbox" v-model="checkedFiltersPrices" @change="filterTypes" value="hi1000"> Більше 1000 грн за добу ({{typesReactive.upperThousand ? typesReactive.upperThousand : 0}})</li>
+                    </ul>
+                </div>
+            </li>
+
+            <li class="border-top my-3"></li>
+
         </ul>
     </div>
+
+    <!--Stays filtered-->
 
     <div class="content p-3" v-if="filtersOn">
         <h5 class="mt-3 p-3" >Показано відфільтрованих помешкань: {{filteredStays.length}} </h5>
@@ -135,9 +155,11 @@
             </div>
         </div>
     </div>
+
+    <!--Stays All-->
     <div class="content p-3" v-else>
         <h5 class="mt-3 p-3" v-if="stays.length">Знайдено помешкань: {{stays.length}} </h5>
-        <h5 class="mt-3 p-3" v-else="total">Пoмешкань не знайдено </h5>
+        <h5 class="mt-3 p-3" v-else>Пoмешкань не знайдено </h5>
 
         <div class="card mb-3 " v-for="stay in stays" :key="stay.id">
             <div class="row g-0">

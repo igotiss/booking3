@@ -126,19 +126,19 @@
                     <li class="list-group-item">
 
                         @switch($feedback->mark)
-                            @case('best')
+                            @case(5)
                                 <span class="badge bg-success">Дуже добре!!! :)))</span>
                                 @break
-                            @case('good')
+                            @case(4)
                                 <span class="badge bg-success bg-opacity-75">Добре! :)</span>
                                 @break
-                            @case('middle')
+                            @case(3)
                                 <span class="badge bg-warning">Посередньо :|</span>
                                 @break
-                            @case('badly')
+                            @case(2)
                                 <span class="badge bg-danger bg-opacity-75">Погано! :(</span>
                                 @break
-                            @case('worst')
+                            @case(1)
                                 <span class="badge bg-danger">Дуже погано!!! :(((</span>
                                 @break
                         @endswitch

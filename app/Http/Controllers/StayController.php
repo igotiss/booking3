@@ -94,7 +94,6 @@ class StayController extends Controller
      */
     public function update(StayRequest $request, Stay $stay)
     {
-
         $validated = $request->validated();
 
         if($request->hasFile('image'))
@@ -105,8 +104,6 @@ class StayController extends Controller
             $file->move('uploads/stays/', $filename);
             $validated['image'] = $filename;
         }
-        //$validated['user_id'] = auth()->id();
-
 
         $stay->update($validated);
 
