@@ -18,7 +18,7 @@ class StayFactory extends Factory
             'title' => $this->faker->word,
             'image' => null,
             'description' => $this->faker->sentence(15),
-            'amenities' => $this->faker->sentence(4),
+            'amenities' => $this->faker->randomElement(['wiFi', 'tv', 'jacuzzi', 'pool']),
             'rooms' => $this->faker->numberBetween(1, 5),
             'beds' => $this->faker->numberBetween(1, 5),
             'status' => $this->faker->randomElement(['active', 'pending', 'inactive']),

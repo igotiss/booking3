@@ -4,57 +4,105 @@
 project of Sigma - CAMP
 </p>
 
-## About Project
+# About Project
+## The following general technical requirements for the system are fulfilled:
+- PHP - v8.1.1.
+- Laravel - v8.83.18.
+- Vue.js.
+- Vuex.
+- web server: nginx
+- DBMS-MySQL;
+- Using Docker
+- Application of Unit tests
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+І present to your attention a site whose main functionality is housing reservation.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Description of general functionality
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+**1. Registration.**
 
-## Learning Laravel
+Users can sign up by providing an email address and coming up with
+password. In addition, the user can indicate his age and country of residence.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+**2. Email confirmation.**
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+After registration, the user should receive an email from
+link, by following which he can verify the affiliation
+email address. Until the email address is verified, the user has
+see a message that it needs verification. The user also
+should be able to re-send the email with a reference to
+email address confirmation.
 
-## Laravel Sponsors
+**3. Personal profile.**
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+All information about the previous bookings is stored in the personal account
+booking, left comments, administration own stays bookings, etc. Also users
+can update, delete or change personal information here.
 
-### Premium Partners
+**4. Search.**
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+Any user, not necessarily registered, can
+search for housing. The site has implemented a search bar
+to which you can specify the destination, the number of tourists and rooms, and
+also the date. The search system itself is simple and convenient.
 
-## Contributing
+**5. Filters**
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+The site is equipped with a convenient filter system that simplifies actions
+user. Available filters:
+- *budget for the night,*
+- *number of stars,*
+- *type of accommodation,* 
+- *quantity beds,*
+- *star-rating,* 
+- *amenities.*
 
-## Code of Conduct
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+**Ratings**
 
-## Security Vulnerabilities
+The project implements two rating systems - by stars and by reviews (see reviews)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+**Reviews**
+
+Users with a verified email can leave reviews. Also, when writing a review, the user can leave a rating for the review. In addition, in the personal account, the user can view all the reviews he has left, and reviews left by other users on the user's own objects
+
+**Options for hotel owners and management. (Booking administration).**
+
+A registered users can register a property that they intend to provide for rent. Property data includes information that will be displayed to customers:
+
+- *details of the object - number of rooms, availability of amenities, etc.;*
+- *photo;*
+- *detailed description, payment details.*
+
+In addition, in their own profile, owners can add or delete properties etc.
+
+ **Booking management**
+
+Here, property owners can manage all their properties
+reservations, as well as cancel them if necessary without payment. In addition, there is a page where the client's own bookings (for other people's real estate) are collected.
+
+## Minimum requirements for project installation
+
+- [Ubuntu 20.04](https://releases.ubuntu.com/20.04/) 
+- [Docker version  20.10.16](https://docs.docker.com/desktop/linux/install/)  
+- [Composer version 2.1.14](https://getcomposer.org/download/) 
+- [NodeJs version 2.1.14](https://nodejs.org/uk/download/)  
+- [npm version 8.13.2](https://docs.npmjs.com/cli/v8/commands/npm-install)  
+
+
+## Quick start
+
+1. Clone project from [repository](https://github.com/igotiss/booking3.git).
+2. Run `composer install` in terminal
+3. Rename `.env.example` to `.env` and updated it with your database credentials
+4. Run the command `./vendor/bin/sail up` in the terminal
+5. Run `sail artisan key:generate`
+6. Run `sail artisan migrate --seed`
+7. Run `npm run dev` and enjoy!
+
+## ********
+Developed by [Igor Tyshchenko](mailto:igotiss@gmail.com)
+
 
 ## License
 
