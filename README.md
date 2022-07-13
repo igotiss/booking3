@@ -1,7 +1,7 @@
 <p align="center"><a href="https://sigma.software" target="_blank"><img <img src="https://cdn.sigma.software/wp-content/themes/ems3/build/project/images/sigma-software-logo.svg" alt="Sigma Software logo" width="200" ></a></p>
 
 <p align="center">
-project of CAMP
+project of Sigma - CAMP
 </p>
 
 ## About Project
