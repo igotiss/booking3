@@ -9,7 +9,6 @@ project of Sigma - CAMP
 - PHP - v8.1.1.
 - Laravel - v8.83.18.
 - Vue.js.
-- Vuex.
 - web server: nginx
 - DBMS-MySQL;
 - Using Docker
@@ -54,7 +53,7 @@ user. Available filters:
 - *number of stars,*
 - *type of accommodation,* 
 - *quantity beds,*
-- *star-rating,* 
+- *review-rating,* 
 - *amenities.*
 
 
@@ -96,10 +95,13 @@ reservations, as well as cancel them if necessary without payment. In addition, 
 2. Run `composer install` in terminal
 3. Rename `.env.example` to `.env` and updated it with your database credentials
 4. Run the command `./vendor/bin/sail up` in the terminal
-5. Run `sail artisan key:generate`
-6. Run `sail artisan migrate --seed`
-7. Run `npm run dev` and enjoy!
+5. Run `./vendor/bin/sail artisan key:generate`
+6. Run `./vendor/bin/sail artisan migrate --seed`
+7. Run `npm install` 
+8. Run `npm run dev` and enjoy!
 
+## Additional - adding and setting up Nginx and PHP-fpm in Laravel Sail
+By defaul thae project is work by native Sail components. But if you need to install Nginx uses the [repo and instruction](https://github.com/acadea/laravel-sail-nginx-php-fpm)    
 ## ********
 Developed by [Igor Tyshchenko](mailto:igotiss@gmail.com)
 

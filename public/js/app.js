@@ -23388,7 +23388,7 @@ var _hoisted_29 = {
   id: "home-collapse"
 };
 var _hoisted_30 = {
-  "class": "btn-toggle-nav list-unstyled fw-normal pb-1 small"
+  "class": "list d-flex"
 };
 
 var _hoisted_31 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", {
@@ -23889,59 +23889,22 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* HYDRATE_EVENTS, NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.checkedFiltersPrices]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Більше 1000 грн за добу (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.typesReactive.upperThousand ? $options.typesReactive.upperThousand : 0) + ")", 1
   /* TEXT */
-  )])])])]), _hoisted_26, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_27, [_hoisted_28, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    type: "checkbox",
-    "onUpdate:modelValue": _cache[29] || (_cache[29] = function ($event) {
-      return $data.checkedFiltersPrices = $event;
-    }),
-    onChange: _cache[30] || (_cache[30] = function () {
-      return $options.filterTypes && $options.filterTypes.apply($options, arguments);
-    }),
-    value: "low99"
-  }, null, 544
-  /* HYDRATE_EVENTS, NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.checkedFiltersPrices]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" до 100 грн за добу (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.typesReactive.lowerHundred ? $options.typesReactive.lowerHundred : 0) + ")", 1
-  /* TEXT */
-  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    type: "checkbox",
-    "onUpdate:modelValue": _cache[31] || (_cache[31] = function ($event) {
-      return $data.checkedFiltersPrices = $event;
-    }),
-    onChange: _cache[32] || (_cache[32] = function () {
-      return $options.filterTypes && $options.filterTypes.apply($options, arguments);
-    }),
-    value: "100-500"
-  }, null, 544
-  /* HYDRATE_EVENTS, NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.checkedFiltersPrices]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" 100 - 499 грн за добу (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.typesReactive.oneFiveHundred ? $options.typesReactive.oneFiveHundred : 0) + ")", 1
-  /* TEXT */
-  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    type: "checkbox",
-    "onUpdate:modelValue": _cache[33] || (_cache[33] = function ($event) {
-      return $data.checkedFiltersPrices = $event;
-    }),
-    onChange: _cache[34] || (_cache[34] = function () {
-      return $options.filterTypes && $options.filterTypes.apply($options, arguments);
-    }),
-    value: "500-1000"
-  }, null, 544
-  /* HYDRATE_EVENTS, NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.checkedFiltersPrices]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" 500 - 999 грн за добу (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.typesReactive.fiveHundredThousand ? $options.typesReactive.fiveHundredThousand : 0) + ")", 1
-  /* TEXT */
-  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    type: "checkbox",
-    "onUpdate:modelValue": _cache[35] || (_cache[35] = function ($event) {
-      return $data.checkedFiltersPrices = $event;
-    }),
-    onChange: _cache[36] || (_cache[36] = function () {
-      return $options.filterTypes && $options.filterTypes.apply($options, arguments);
-    }),
-    value: "hi1000"
-  }, null, 544
-  /* HYDRATE_EVENTS, NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.checkedFiltersPrices]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Більше 1000 грн за добу (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.typesReactive.upperThousand ? $options.typesReactive.upperThousand : 0) + ")", 1
-  /* TEXT */
-  )])])])]), _hoisted_31])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Stays filtered"), $data.filtersOn ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", _hoisted_33, "Показано відфільтрованих помешкань: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.filteredStays.length), 1
+  )])])])]), _hoisted_26, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_27, [_hoisted_28, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_30, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(5, function (star) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", {
+      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([{
+        'active': star <= 3
+      }, "star"]),
+      key: star
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(star <= 3 ? 'fa fa-star' : 'fa fa-star')
+    }, null, 2
+    /* CLASS */
+    )], 2
+    /* CLASS */
+    );
+  }), 64
+  /* STABLE_FRAGMENT */
+  ))])])]), _hoisted_31])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Stays filtered"), $data.filtersOn ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", _hoisted_33, "Показано відфільтрованих помешкань: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.filteredStays.length), 1
   /* TEXT */
   ), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.filteredStays, function (stay) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {

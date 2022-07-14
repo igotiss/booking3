@@ -76,11 +76,10 @@
                     <h5 class="text-decoration-underline"> Зірковий рейтинг</h5>
                 </button>
                 <div class="collapse show" id="home-collapse">
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><input type="checkbox" v-model="checkedFiltersPrices" @change="filterTypes" value="low99"> до 100 грн за добу ({{typesReactive.lowerHundred ? typesReactive.lowerHundred : 0}})</li>
-                        <li><input type="checkbox" v-model="checkedFiltersPrices" @change="filterTypes" value="100-500"> 100 - 499 грн за добу  ({{typesReactive.oneFiveHundred ? typesReactive.oneFiveHundred : 0}})</li>
-                        <li><input type="checkbox" v-model="checkedFiltersPrices" @change="filterTypes" value="500-1000">  500 - 999 грн за добу ({{typesReactive.fiveHundredThousand ? typesReactive.fiveHundredThousand : 0}})</li>
-                        <li><input type="checkbox" v-model="checkedFiltersPrices" @change="filterTypes" value="hi1000"> Більше 1000 грн за добу ({{typesReactive.upperThousand ? typesReactive.upperThousand : 0}})</li>
+                    <ul class="list d-flex">
+                        <li  v-for="star in 5" :class="{ 'active': star <= 3 }" :key="star" class="star">
+                            <i :class="star <= 3 ? 'fa fa-star' : 'fa fa-star'"></i>
+                        </li>
                     </ul>
                 </div>
             </li>
