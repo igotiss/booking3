@@ -66,8 +66,9 @@
                                         <strong> Котедж </strong></small>
                                     @endif
                                 </p>
+
                                 <a href="{{route('stays.show', $stay->id)}}">
-                                    <show-rating :rating="{{$stay->getAvgRating()}}"></show-rating>
+                                    <show-rating :rating="{{$stay->getAvgRating() ? $stay->getAvgRating() : 0}}"></show-rating>
                                 </a>
                             </div>
 
