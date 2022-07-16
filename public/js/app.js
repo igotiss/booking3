@@ -23147,22 +23147,40 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }
 
         if (_this3.searchStartDate || _this3.searchEndDate) {
-          _this3.searchStartDate = Date.parse(_this3.searchStartDate);
-          _this3.searchEndDate = Date.parse(_this3.searchEndDate);
-          console.log(_this3.searchStartDate);
-          console.log(_this3.searchEndDate);
+          (function () {
+            _this3.searchStartDate = Date.parse(_this3.searchStartDate);
+            _this3.searchEndDate = Date.parse(_this3.searchEndDate);
 
-          if (_this3.searchStartDate && !_this3.searchEndDate) {
-            alert('Ви не обрали дату виїзду');
-          }
+            if (_this3.searchStartDate && !_this3.searchEndDate) {
+              alert('Ви не обрали дату виїзду');
+            }
 
-          if (!_this3.searchStartDate && _this3.searchEndDate) {
-            alert('Ви не обрали дату заїзду');
-          }
+            if (!_this3.searchStartDate && _this3.searchEndDate) {
+              alert('Ви не обрали дату заїзду');
+            }
 
-          if (_this3.searchStartDate >= _this3.searchEndDate) {
-            alert('Дата заїзду має бути ранішою ніж дата виїзду!');
-          }
+            if (_this3.searchStartDate >= _this3.searchEndDate) {
+              alert('Дата заїзду має бути ранішою ніж дата виїзду!');
+            }
+
+            var staysBooked = _this3.stays.filter(function (stay) {
+              return stay.date !== null;
+            });
+
+            var bookedNotNeedsInSearch = staysBooked.filter(function (staysBooked) {
+              return Date.parse(staysBooked.date.start_date) === _this3.searchStartDate || Date.parse(staysBooked.date.end_date) === _this3.searchStartDate || Date.parse(staysBooked.date.start_date) === _this3.searchEndDate || Date.parse(staysBooked.date.end_date) === _this3.searchEndDate || Date.parse(staysBooked.date.start_date) < _this3.searchStartDate && Date.parse(staysBooked.date.end_date) > _this3.searchStartDate || Date.parse(staysBooked.date.start_date) < _this3.searchEndDate && Date.parse(staysBooked.date.end_date) > _this3.searchEndDate || Date.parse(staysBooked.date.start_date) > _this3.searchStartDate && Date.parse(staysBooked.date.end_date) < _this3.searchEndDate;
+            });
+
+            var _loop3 = function _loop3(i) {
+              _this3.stays = _this3.stays.filter(function (stays) {
+                return stays.id !== bookedNotNeedsInSearch[i].id;
+              });
+            };
+
+            for (var i = 0; i < bookedNotNeedsInSearch.length; i++) {
+              _loop3(i);
+            }
+          })();
         }
 
         _this3.searchLocation = '';
@@ -24141,7 +24159,8 @@ var _hoisted_137 = /*#__PURE__*/_withScopeId(function () {
 });
 
 var _hoisted_138 = {
-  key: 0
+  key: 0,
+  "class": "badge bg-secondary"
 };
 var _hoisted_139 = {
   "class": "card-text stay-price"
@@ -24703,7 +24722,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_135, [_hoisted_136, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stay.beds), 1
     /* TEXT */
-    )]), _hoisted_137, stay.date ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_138, "Має заброньовані періоди: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stay.date.start_date) + " - " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stay.date.end_date), 1
+    )]), _hoisted_137, stay.date ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_138, "Має бронювання: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stay.date.start_date) + " - " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stay.date.end_date), 1
     /* TEXT */
     )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", _hoisted_139, [_hoisted_140, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stay.price) + " грн.", 1
     /* TEXT */

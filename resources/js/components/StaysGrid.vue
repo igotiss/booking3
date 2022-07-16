@@ -321,7 +321,7 @@
                                 <strong>предоплата</strong>
                             </span>
 
-                            <span v-if="stay.date">Має заброньовані періоди: {{stay.date.start_date}} - {{stay.date.end_date}}</span>
+                            <span  class="badge bg-secondary" v-if="stay.date">Має бронювання: {{stay.date.start_date}} - {{stay.date.end_date}}</span>
 
                         </p>
                         <h5 class="card-text stay-price">Ціна: <strong> {{stay.price}} грн.</strong></h5>
@@ -574,8 +574,7 @@ export default {
                 if (this.searchStartDate || this.searchEndDate) {
                     this.searchStartDate = Date.parse(this.searchStartDate);
                     this.searchEndDate = Date.parse(this.searchEndDate);
-                    console.log(this.searchStartDate)
-                    console.log(this.searchEndDate)
+
                     if(this.searchStartDate && !this.searchEndDate) {
                         alert('Ви не обрали дату виїзду')
                     }
@@ -586,6 +585,21 @@ export default {
                         alert('Дата заїзду має бути ранішою ніж дата виїзду!')
                     }
 
+                    let staysBooked = this.stays.filter(stay => stay.date !== null)
+
+                    let bookedNotNeedsInSearch = staysBooked.filter(staysBooked =>
+                        Date.parse(staysBooked.date.start_date) === this.searchStartDate ||
+                        Date.parse(staysBooked.date.end_date) === this.searchStartDate ||
+                        Date.parse(staysBooked.date.start_date) === this.searchEndDate ||
+                        Date.parse(staysBooked.date.end_date) === this.searchEndDate ||
+                        Date.parse(staysBooked.date.start_date) < this.searchStartDate && Date.parse(staysBooked.date.end_date) > this.searchStartDate ||
+                        Date.parse(staysBooked.date.start_date) < this.searchEndDate && Date.parse(staysBooked.date.end_date) > this.searchEndDate ||
+                        Date.parse(staysBooked.date.start_date) > this.searchStartDate && Date.parse(staysBooked.date.end_date) < this.searchEndDate
+                    )
+
+                    for(let i=0; i<bookedNotNeedsInSearch.length; i++){
+                        this.stays = this.stays.filter(stays => stays.id !==bookedNotNeedsInSearch[i].id)
+                    }
                 }
                 this.searchLocation = '';
                 this.searchRooms = [];
