@@ -27,7 +27,8 @@ class StayResource extends JsonResource
             'price' => $this->price,
             'ratings' => $this->ratings->avg('rating'),
             'feedbacks' => $this->feedbacks->count(),
-            'feedbacks_mark' => $this->feedbacks->avg('mark')
+            'feedbacks_mark' => $this->feedbacks->avg('mark'),
+            'date' => $this->bookings->first(),
         ];
     }
 }
