@@ -245,6 +245,13 @@
                                 Ліжок:
                                 <strong>{{stay.beds}}</strong>
                             </span>
+
+                            <span class="card-text p-2">
+                                Деталі оплати:
+                                <strong>предоплата</strong>
+                            </span>
+
+                            <span  class="badge bg-secondary" v-if="stay.date">Має бронювання</span>
                         </p>
                         <h5 class="card-text stay-price">Ціна: <strong> {{stay.price}} грн.</strong></h5>
                         <a :href="'booking/'+stay.id">
@@ -321,7 +328,7 @@
                                 <strong>предоплата</strong>
                             </span>
 
-                            <span  class="badge bg-secondary" v-if="stay.date">Має бронювання: {{stay.date.start_date}} - {{stay.date.end_date}}</span>
+                            <span  class="badge bg-secondary" v-if="stay.date">Має бронювання</span>
 
                         </p>
                         <h5 class="card-text stay-price">Ціна: <strong> {{stay.price}} грн.</strong></h5>
