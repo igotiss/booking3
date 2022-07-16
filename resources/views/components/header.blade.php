@@ -75,6 +75,7 @@
                             <a class="dropdown-item" href="{{route('booking.own-index')}}">Мої бронювання</a>
                             <a class="dropdown-item " href="{{route('profile.show')}}">Керувати аккаунтом</a>
                             <a class="dropdown-item " href="{{route('feedback.index')}}">Відгуки</a>
+                            <a class="dropdown-item " href="{{route('messages.index')}}">Системні повідомлення</a>
                             <a class="dropdown-item " href="{{ route('logout') }}"
                                onclick="event.preventDefault();
                                document.getElementById('logout-form').submit();">

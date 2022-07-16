@@ -15,12 +15,14 @@
                             @endif
                             href="{{route('home')}}">Усі оголошення</a>
                     </li>
+
                     <li class="nav-item">
                         <a @if(Route::currentRouteName()==='stays.own_index') class="nav-link active"
                            @else class="nav-link "
                            @endif
                            href="{{route('stays.own_index')}}">Мої оголошення</a>
                     </li>
+
                     <li class="nav-item">
                         <a @if(Route::currentRouteName()==='booking.index') class="nav-link active"
                            @else class="nav-link "
@@ -28,19 +30,28 @@
                            href="{{route('booking.index')}}">Керування бронюваннями</a>
 
                     </li>
+
                     <li class="nav-item">
                         <a @if(Route::currentRouteName()==='booking.own-index') class="nav-link active"
                            @else class="nav-link "
                            @endif
                            href="{{route('booking.own-index')}}">Мої бронювання</a>
-
                     </li>
+
                     <li class="nav-item">
                         <a @if(Route::currentRouteName()==='feedback.index') class="nav-link active"
                            @else class="nav-link "
                            @endif
                            href="{{route('feedback.index')}}">Відгуки</a>
                     </li>
+
+                    <li class="nav-item">
+                        <a @if(Route::currentRouteName()==='messages.index') class="nav-link active"
+                           @else class="nav-link "
+                           @endif
+                           href="{{route('messages.index')}}">Системні повідомлення</a>
+                    </li>
+
                     <li class="nav-item">
                         <a @if(Route::currentRouteName()==='profile.show') class="nav-link active"
                            @else class="nav-link "

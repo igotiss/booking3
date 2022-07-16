@@ -21,7 +21,8 @@
                         <strong>{{$user->created_at->format('d n Y')}}</strong> р., з такими особистими даними:</h6>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">Ім'я: <strong>{{$user->name}} </strong></li>
-                        <li class="list-group-item">                             Вік: <strong>{{$user->age ??  'не вказано'}}</strong></li>
+                        <li class="list-group-item">Емейл: <strong>{{$user->email}} </strong></li>
+                        <li class="list-group-item"> Вік: <strong>{{$user->age ??  'не вказано'}}</strong></li>
                         <li class="list-group-item">Країна проживання:
                             <strong>{{$user->location ??  'не вказано'}}</strong></li>
 
