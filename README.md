@@ -57,15 +57,15 @@ user. Available filters:
 - *amenities.*
 
 
-**Ratings**
+**6. Ratings**
 
 The project implements two rating systems - by stars and by reviews (see reviews)
 
-**Reviews**
+**7. Reviews**
 
 Users with a verified email can leave reviews. Also, when writing a review, the user can leave a rating for the review. In addition, in the personal account, the user can view all the reviews he has left, and reviews left by other users on the user's own objects
 
-**Options for hotel owners and management. (Booking administration).**
+**8. Options for hotel owners and management. (Booking administration).**
 
 A registered users can register a property that they intend to provide for rent. Property data includes information that will be displayed to customers:
 
@@ -75,10 +75,14 @@ A registered users can register a property that they intend to provide for rent.
 
 In addition, in their own profile, owners can add or delete properties etc.
 
- **Booking management**
+ **9. Booking management**
 
 Here, property owners can manage all their properties
 reservations, as well as cancel them if necessary without payment. In addition, there is a page where the client's own bookings (for other people's real estate) are collected.
+
+ **10. System announcements**
+
+A CRUD system of ads is implemented, which are shown to all registered users, but only the site administrator can add/change/delete ads.
 
 ## Minimum requirements for project installation
 

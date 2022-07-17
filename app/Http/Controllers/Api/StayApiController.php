@@ -39,5 +39,4 @@ class StayApiController extends Controller
         return $rating;
     }
 
-
 }

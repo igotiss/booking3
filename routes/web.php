@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Main page (for not-auth users)
 Route::get('/', function () {
     return view('welcome');
 });
@@ -23,7 +24,6 @@ Auth::routes(['verify' => true]);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('verified');
 
 // Users
-
 Route::prefix('profile')
     ->name('profile.')
     ->middleware('verified')
@@ -66,7 +66,6 @@ Route::get('/own_booking/', [\App\Http\Controllers\BookingController::class, 'in
 
 
 // Feedbacks
-
 Route::prefix('feedback')
     ->name('feedback.')
     ->middleware('verified')
@@ -80,7 +79,7 @@ Route::prefix('feedback')
         Route::delete('/{feedback}', [\App\Http\Controllers\FeedbackController::class, 'destroy'])->name('delete');
     });
 
-// Messages
+// Messages (for not Admin Users)
 Route::prefix('messages')
     ->name('messages.')
     ->middleware('verified')
@@ -88,6 +87,7 @@ Route::prefix('messages')
         Route::get('/', [\App\Http\Controllers\MessageController::class, 'index'])->name('index');
     });
 
+// Administrator routes
 Route::prefix('admin/messages')
     ->name('messages.')
     ->middleware('verified', )

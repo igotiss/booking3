@@ -21,7 +21,11 @@
                 <tr>
                     <th scope="row">{{$loop->iteration}}</th>
                     <td> {{$booking->id}}</td>
-                    <td> {{$booking->stay->title}}</td>
+                    <td class="text-decoration-underline">
+                        <a href="{{route('stays.show',$booking->stay->id)}}">
+                            {{$booking->stay->title}}
+                        </a>
+                    </td>
                     <td> {{$booking->stay->user->name}}</td>
                     <td> {{$booking->start_date}}</td>
                     <td> {{$booking->end_date}}</td>
