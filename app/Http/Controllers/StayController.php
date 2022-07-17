@@ -18,7 +18,6 @@ class StayController extends Controller
     public function index()    {
         $bookings = Booking::where('owner_id', auth()->id())->get();
         $bookingsPending =Booking::where('owner_id', auth()->id())->where('status', 'pending')->get();
-
         $stays = Stay::where('user_id', auth()->id())->get()->sortByDesc("created_at");
         return view('pages.stays.index', compact('stays', 'bookings', 'bookingsPending'));
     }
