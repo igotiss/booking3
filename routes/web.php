@@ -86,12 +86,16 @@ Route::prefix('messages')
     ->middleware('verified')
     ->group(function (){
         Route::get('/', [\App\Http\Controllers\MessageController::class, 'index'])->name('index');
+    });
+
+Route::prefix('admin/messages')
+    ->name('messages.')
+    ->middleware('verified', )
+    ->middleware( 'is_admin')
+    ->group(function (){
         Route::get('/create', [\App\Http\Controllers\MessageController::class, 'create'])->name('create');
         Route::post('/', [\App\Http\Controllers\MessageController::class, 'store'])->name('store');
-        //Route::get('/{message}', [\App\Http\Controllers\MessageController::class, 'show'])->name('show');
-        //
         Route::get('/edit/{message}', [\App\Http\Controllers\MessageController::class, 'edit'])->name('edit');
         Route::patch('/{message}', [\App\Http\Controllers\MessageController::class, 'update'])->name('update');
         Route::delete('/{message}', [\App\Http\Controllers\MessageController::class, 'destroy'])->name('delete');
-
     });
