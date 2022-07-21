@@ -105,7 +105,7 @@ A CRUD system of ads is implemented, which are shown to all registered users, bu
 8. Run `npm run dev` and enjoy!
 
 ## Additional - adding and setting up Nginx and PHP-fpm in Laravel Sail
-By defaul thae project is work by native Sail components. But if you need to install Nginx uses the [repo and instruction](https://github.com/acadea/laravel-sail-nginx-php-fpm)    
+By defaul the project is work by native Sail components. But if you need to install Nginx uses the [repo and instruction](https://github.com/acadea/laravel-sail-nginx-php-fpm)    
 ## ********
 Developed by [Igor Tyshchenko](mailto:igotiss@gmail.com)
 
